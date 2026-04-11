@@ -1,6 +1,6 @@
 import React from "react";
-import { Navbar, Nav, Container, Image, Stack } from "react-bootstrap";
-import { FiMoon, FiSun, FiSettings, FiLogOut, FiZap } from "react-icons/fi";
+import { Navbar, Nav, Container, Image, Stack, Button } from "react-bootstrap";
+import { FiMoon, FiSun, FiSettings, FiLogOut, FiZap, FiLogIn, FiUserPlus } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useThemeContext } from "../../theme";
 import { authService } from "../../../features/auth/services/authService";
@@ -9,7 +9,10 @@ const CustomNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { mode, toggleTheme } = useThemeContext();
+
+  const isLoggedIn = !!localStorage.getItem("token");
   const username = localStorage.getItem("username") || "User";
+
   const handleLogout = async () => {
     if (window.confirm("Are you sure you want to logout?")) {
       await authService.logout();
@@ -33,9 +36,7 @@ const CustomNavbar = () => {
           >
             <FiZap size={22} color="white" />
           </div>
-          <Stack direction="horizontal" gap={2} className="align-items-center">
-            <span className="fw-black h3 mb-0 text-theme">Zukhruf</span>
-          </Stack>
+          <span className="fw-black h3 mb-0 text-theme">Zukhruf</span>
         </Navbar.Brand>
 
         <Navbar.Toggle className="border-0 bg-transparent" />
@@ -57,54 +58,56 @@ const CustomNavbar = () => {
             })}
           </Nav>
 
-          <Stack
-            direction="horizontal"
-            gap={3}
-            className="align-items-center mt-3 mt-lg-0"
-          >
+          <Stack direction="horizontal" gap={3} className="align-items-center mt-3 mt-lg-0">
             <style>{`
               .hover-icon { transition: all 0.3s ease; cursor: pointer; color: var(--text-muted-custom); }
               .hover-orange:hover { color: #FF6B00 !important; transform: translateY(-2px); }
               .hover-red:hover { color: #ff4d4d !important; transform: translateY(-2px); }
             `}</style>
-
-            <div
-              onClick={toggleTheme}
-              className="hover-icon hover-orange"
-              title="Toggle Theme"
-            >
+            <div onClick={toggleTheme} className="hover-icon hover-orange" title="Toggle Theme">
               {mode === "dark" ? <FiSun size={20} /> : <FiMoon size={20} />}
             </div>
 
-            <div
-              onClick={() => navigate("/settings")}
-              className="hover-icon hover-orange"
-              title="Settings"
-            >
-              <FiSettings size={20} />
-            </div>
+            {isLoggedIn ? (
+              <>
+                <div onClick={() => navigate("/settings")} className="hover-icon hover-orange" title="Settings">
+                  <FiSettings size={20} />
+                </div>
 
-            <div
-              onClick={handleLogout}
-              className="hover-icon hover-red"
-              title="Logout"
-            >
-              <FiLogOut size={20} />
-            </div>
-            <div
-              className="d-flex align-items-center gap-2 ms-2 ps-3 border-start border-secondary border-opacity-25 cursor-pointer"
-              onClick={() => navigate("/settings")}
-            >
-              <span className="small fw-bold text-theme d-none d-sm-block">
-                {username}
-              </span>
-              <Image
-                src={`https://ui-avatars.com/api/?name=${username}&background=FF6B00&color=fff`}
-                roundedCircle
-                width={35}
-                height={35}
-              />
-            </div>
+                <div onClick={handleLogout} className="hover-icon hover-red" title="Logout">
+                  <FiLogOut size={20} />
+                </div>
+
+                <div
+                  className="d-flex align-items-center gap-2 ms-2 ps-3 border-start border-secondary border-opacity-25 cursor-pointer"
+                  onClick={() => navigate("/settings")}
+                >
+                  <span className="small fw-bold text-theme d-none d-sm-block">{username}</span>
+                  <Image
+                    src={`https://ui-avatars.com/api/?name=${username}&background=FF6B00&color=fff`}
+                    roundedCircle
+                    width={35}
+                    height={35}
+                  />
+                </div>
+              </>
+            ) : (
+              <Stack direction="horizontal" gap={2} className="ms-lg-3">
+                <Button 
+                  variant="link" 
+                  onClick={() => navigate("/login")}
+                  className="text-theme fw-bold text-decoration-none d-flex align-items-center gap-1 px-3"
+                >
+                  <FiLogIn /> Login
+                </Button>
+                <Button 
+                  onClick={() => navigate("/register")}
+                  className="btn-primary-custom d-flex align-items-center gap-1 py-2 px-4 shadow-sm"
+                >
+                  <FiUserPlus /> Register
+                </Button>
+              </Stack>
+            )}
           </Stack>
         </Navbar.Collapse>
       </Container>
