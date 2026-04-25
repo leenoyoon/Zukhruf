@@ -19,7 +19,6 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
   const {
     file,
     isUploading,
-    uploadProgress,
     imageDetails,
     setImageDetails,
     uploadedImageId,
@@ -31,8 +30,6 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
     handleUpload,
     handleCreateProject,
     resetFile,
-    isAnalyzing,
-    handleAIPreview
   } = hookData;
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
