@@ -262,35 +262,6 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
               </Form.Group>
 
               <Button
-                disabled={isAnalyzing || createdProjectId || !uploadedImageId}
-                onClick={handleAIPreview}
-                className="w-100 py-3 mt-3 fw-bold d-flex justify-content-center align-items-center gap-2 border-0"
-                style={{
-                  background: isAnalyzing 
-                    ? "rgba(255, 255, 255, 0.05)" 
-                    : "linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(255, 87, 34, 0.05) 100%)",
-                  border: `2px solid ${isAnalyzing ? "transparent" : "var(--primary-orange)"}`,
-                  color: isAnalyzing ? "var(--text-muted)" : "var(--primary-orange)",
-                  boxShadow: isAnalyzing ? "none" : "0 0 20px rgba(255, 107, 0, 0.15)",
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                  borderRadius: "12px",
-                  transition: "all 0.3s ease"
-                }}
-              >
-                {isAnalyzing ? (
-                  <>
-                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                    <span className="ms-2">{t("new_project_sidebar.analyzing")}</span>
-                  </>
-                ) : (
-                  <>
-                    <FiZap size={22} className="text-warning" /> {t("new_project_sidebar.preview_ai")}
-                  </>
-                )}
-              </Button>
-
-              <Button
                 disabled={
                   isCreatingProject || createdProjectId || !uploadedImageId
                 }
