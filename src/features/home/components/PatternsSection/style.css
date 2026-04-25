@@ -1,0 +1,22 @@
+.pattern-highlight {
+  color: #ff6b00;
+}
+.pattern-view-all {
+  transition: 0.3s ease;
+  color: #ff6b00 !important;
+}
+.pattern-view-all:hover {
+  transform: translateX(5px);
+}
+.pattern-img-container {
+  position: relative;
+  padding-top: 60%;
+  overflow: hidden;
+}
+.pattern-badge {
+  background-color: #ff6b00;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.4);
+  font-size: 0.75rem;
+  z-index: 10;
+}

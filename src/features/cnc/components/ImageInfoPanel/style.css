@@ -1,0 +1,11 @@
+.info-panel-card {
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+.info-panel-desc {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+.info-panel-badge {
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
+}

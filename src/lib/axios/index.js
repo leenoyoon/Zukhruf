@@ -2,13 +2,16 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const api = axios.create({
-  baseURL: "https://anfalgh.pythonanywhere.com/api/",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Token ${token}`;
+  const currentLang = localStorage.getItem("i18nextLng") || "en";
+  config.headers["Accept-Language"] = currentLang;
+
   return config;
 });
 

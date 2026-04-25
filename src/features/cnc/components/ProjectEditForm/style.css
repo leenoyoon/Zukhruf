@@ -1,0 +1,6 @@
+.project-custom-input:focus {
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 0.25rem rgba(255, 107, 0, 0.25);
+}

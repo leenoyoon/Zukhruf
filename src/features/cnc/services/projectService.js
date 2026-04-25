@@ -30,4 +30,11 @@ export const projectService = {
     const response = await api.put(`projects/${id}`, data);
     return response.data;
   },
+  generateGcode: async (projectId, title) => {
+    const formData = new FormData();
+    formData.append("project_id", projectId);
+    formData.append("title", title);
+    const response = await api.post("generate-gcode/", formData);
+    return response.data;
+  },
 };

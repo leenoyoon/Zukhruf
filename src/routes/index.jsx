@@ -1,50 +1,34 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import LoginPage from "../features/auth/pages/login";
-import DashboardPage from "../features/home/pages";
-import ProcessPage from "../features/cnc/pages/process";
+import { createBrowserRouter } from "react-router-dom";
 import AppContainer from "../shared/layout/app-container";
-import HistoryPage from "../features/cnc/pages/history";
-import GalleryPage from "../features/cnc/pages/gallery";
-import SettingsPage from "../features/cnc/pages/settings";
-import RegisterPage from "../features/auth/pages/register";
-import ImageDetailsPage from "../features/cnc/pages/image-details";
-import ProjectDetailsPage from "../features/cnc/pages/project-details";
+import { authRoutes } from "../features/auth/routes";
+import { homeRoutes } from "../features/home/routes";
+import { publicCncRoutes, privateCncRoutes } from "../features/cnc/routes";
+import { AuthGuard } from "../features/auth/guards/AuthGuard";
+import AllPatternsPage from "../features/cnc/pages/all-patterns";
+
 export const router = createBrowserRouter([
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
-  },
+  ...authRoutes,
+
   {
     path: "/",
     element: <AppContainer />,
     children: [
+      ...homeRoutes,
+      ...publicCncRoutes,
       {
-        index: true,
-        element: <DashboardPage />,
+        path: "/patterns",
+        element: <AllPatternsPage />,
       },
-      {
-        path: "dashboard",
-        element: <DashboardPage />,
-      },
-      {
-        path: "new-project",
-        element: <ProcessPage />,
-      },
-      {
-        path: "history",
-        element: <HistoryPage />,
-      },
-      {
-        path: "settings",
-        element: <SettingsPage />,
-      },
-      { path: "gallery", element: <GalleryPage /> },
-      { path: "gallery/:id", element: <ImageDetailsPage /> },
-      { path: "project/:id", element: <ProjectDetailsPage /> },
     ],
+  },
+
+  {
+    path: "/",
+    element: (
+      <AuthGuard>
+        <AppContainer />
+      </AuthGuard>
+    ),
+    children: [...privateCncRoutes],
   },
 ]);

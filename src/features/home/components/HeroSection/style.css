@@ -1,0 +1,60 @@
+.hero-section {
+  padding-top: 160px;
+  padding-bottom: 120px;
+}
+.hero-mesh-1 {
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  width: 35vw;
+  height: 35vw;
+  background: radial-gradient(
+    circle,
+    rgba(255, 107, 0, 0.12) 0%,
+    transparent 60%
+  );
+  filter: blur(60px);
+}
+.hero-mesh-2 {
+  position: absolute;
+  bottom: -10%;
+  left: 10%;
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(
+    circle,
+    rgba(255, 138, 0, 0.08) 0%,
+    transparent 60%
+  );
+  filter: blur(60px);
+}
+.hero-badge {
+  font-size: 0.9rem;
+  box-shadow: 0 0 20px rgba(255, 107, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid #ff6b00;
+  color: #ff6b00;
+}
+.hero-title {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  letter-spacing: -2px;
+  line-height: 1.2;
+}
+.hero-title-gradient {
+  background: linear-gradient(135deg, #ff6b00 0%, #ffb067 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 30px rgba(255, 107, 0, 0.3));
+}
+.btn-explore {
+  border: 2px solid #ff6b00;
+  color: #ff6b00;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+.btn-explore:hover {
+  background-color: #ff6b00;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255, 107, 0, 0.35);
+}

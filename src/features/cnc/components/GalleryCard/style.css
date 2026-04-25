@@ -1,0 +1,46 @@
+.gallery-card:hover .action-overlay {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.action-overlay {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.gallery-card-img-container {
+  position: relative;
+  padding-top: 65%;
+  overflow: hidden;
+}
+
+.pattern-badge-shadow {
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
+}
+
+.btn-action-circle {
+  width: 45px;
+  height: 45px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+}
+
+.btn-play-circle {
+  width: 55px;
+  height: 55px;
+  background-color: var(--primary-orange);
+  border: none;
+  box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+}
+
+.btn-delete-circle {
+  width: 45px;
+  height: 45px;
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #ff4d4d;
+  border: none;
+}

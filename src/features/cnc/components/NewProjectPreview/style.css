@@ -1,0 +1,4 @@
+.preview-grid-bg {
+  background-image: radial-gradient(var(--text-main) 1px, transparent 1px);
+  background-size: 30px 30px;
+}

@@ -1,0 +1,13 @@
+.hover-icon {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: var(--text-muted-custom);
+}
+.hover-orange:hover {
+  color: var(--primary-orange) !important;
+  transform: translateY(-2px);
+}
+.hover-red:hover {
+  color: #ff4d4d !important;
+  transform: translateY(-2px);
+}

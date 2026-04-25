@@ -1,0 +1,12 @@
+.stats-wrapper {
+  margin-top: -50px;
+  position: relative;
+  z-index: 2;
+}
+.stats-card {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(20px);
+}
+.stats-number {
+  color: #ff6b00;
+}
