@@ -46,4 +46,14 @@ export const imageService = {
     });
     return response.data;
   },
+
+  // Lightweight preflight check (stage1 + coverage advisor only, no G-code/
+  // simulation generated) -- used to ask the user BEFORE committing to the
+  // slower full generation whether to switch to a suggested tool diameter.
+  checkCoverage: async (formData) => {
+    const response = await api.post("check-coverage/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
 };

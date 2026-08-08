@@ -11,6 +11,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next"; 
+import { CoverageConfirmModal } from "../CoverageConfirmModal";
 import "./style.css";
 
 export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
@@ -19,6 +20,7 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
   const {
     file,
     isUploading,
+    isLoadingExisting,
     imageDetails,
     setImageDetails,
     uploadedImageId,
@@ -26,10 +28,20 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
     dimensions,
     setDimensions,
     createdProjectId,
+    toolDiaMm,
+    setToolDiaMm,
+    isAnalyzing,
+    handleAIPreview,
     onDrop,
     handleUpload,
     handleCreateProject,
     resetFile,
+    coverageInfo,
+    showCoverageModal,
+    isCheckingCoverage,
+    handleAcceptSuggestedTool,
+    handleDeclineSuggestedTool,
+    handleCancelCreation,
   } = hookData;
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -55,7 +67,23 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
     >
       <div className="d-flex flex-column gap-4">
         <AnimatePresence mode="wait">
-          {!file ? (
+          {isLoadingExisting && !file ? (
+            <motion.div
+              key="loading-existing"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="p-5 rounded-4 text-center"
+              style={{
+                backgroundColor: "var(--glass-bg)",
+                border: "2px dashed var(--glass-border)",
+              }}
+            >
+              <Spinner size="sm" className="mb-2" />
+              <p className="text-theme-muted small mb-0">
+                {t("new_project_sidebar.loading_existing")}
+              </p>
+            </motion.div>
+          ) : !file ? (
             <motion.div
               key="dropzone"
               initial={{ opacity: 0, y: 10 }}
@@ -258,9 +286,55 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
                 />
               </Form.Group>
 
+              <Form.Group>
+                <Form.Label className="text-theme fw-bold small">
+                  {t("new_project_sidebar.tool_diameter")}
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  step="0.1"
+                  min="0.1"
+                  className="custom-input"
+                  style={{ ...inputStyle, direction: 'ltr' }}
+                  value={toolDiaMm}
+                  onChange={(e) => setToolDiaMm(e.target.value)}
+                  disabled={createdProjectId}
+                />
+                <Form.Text className="text-theme-muted">
+                  {t("new_project_sidebar.tool_diameter_hint")}
+                </Form.Text>
+              </Form.Group>
+
+              {/* Runs ai-visualize/ with the chosen dimensions + tool diameter
+                  BEFORE creating the project, so coverage/auto-switch info
+                  (shown in NewProjectPreview) is visible while it's still
+                  cheap to change the tool diameter above and try again. */}
+              <Button
+                variant="outline-light"
+                disabled={isAnalyzing || createdProjectId}
+                onClick={handleAIPreview}
+                className="w-100 py-2 fw-bold d-flex justify-content-center align-items-center gap-2"
+                style={{
+                  borderColor: "var(--glass-border)",
+                  color: "var(--text-main)",
+                }}
+              >
+                {isAnalyzing ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <FiZap size={16} />
+                )}
+                {isAnalyzing
+                  ? t("new_project_sidebar.analyzing")
+                  : t("new_project_sidebar.preview_ai")}
+              </Button>
+
               <Button
                 disabled={
-                  isCreatingProject || createdProjectId || !uploadedImageId
+                  isCreatingProject ||
+                  isCheckingCoverage ||
+                  createdProjectId ||
+                  !uploadedImageId
                 }
                 onClick={handleCreateProject}
                 className="w-100 py-3 mt-2 fw-bold d-flex justify-content-center align-items-center gap-2"
@@ -276,7 +350,11 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
                   borderRadius: "12px",
                 }}
               >
-                {isCreatingProject ? (
+                {isCheckingCoverage ? (
+                  <>
+                    <Spinner size="sm" /> {t("new_project_sidebar.checking_coverage")}
+                  </>
+                ) : isCreatingProject ? (
                   t("new_project_sidebar.creating")
                 ) : createdProjectId ? (
                   <>
@@ -290,6 +368,15 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
           </Card.Body>
         </Card>
       </div>
+
+      <CoverageConfirmModal
+        show={showCoverageModal}
+        coverage={coverageInfo}
+        isSubmitting={isCreatingProject}
+        onAccept={handleAcceptSuggestedTool}
+        onDecline={handleDeclineSuggestedTool}
+        onCancel={handleCancelCreation}
+      />
     </Col>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Col, Card, Badge, Button } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import {
   FiPlay,
   FiTrash2,
 } from "react-icons/fi";
-import { useTranslation } from "react-i18next"; 
+import { useTranslation } from "react-i18next";
 import "./style.css";
 
 export const ImageInfoPanel = ({
@@ -18,7 +18,38 @@ export const ImageInfoPanel = ({
   slideRightVariant,
 }) => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation(); 
+  const { t, i18n } = useTranslation();
+
+  // capture a stable fallback timestamp once at module render time
+  const FALLBACK_NOW = useMemo(() => Date.now(), []);
+
+  const formattedDate = useMemo(() => {
+    const ts = imageDetails.created_at || FALLBACK_NOW;
+    const dt = new Date(ts);
+    return dt.toLocaleDateString(i18n.language === "ar" ? "ar-EG" : "en-GB");
+  }, [imageDetails.created_at, i18n.language, FALLBACK_NOW]);
+
+  // This image already exists in the library (uploaded or a stock pattern)
+  // -- there's no new file to upload. Instead of creating the CNC project
+  // immediately with hidden default dimensions, send the user through the
+  // same "Step 2: CNC Setup" screen as a brand new upload (/new-project),
+  // passing the existing image along via router state so Step 1 is
+  // pre-filled and skipped. That way the user can adjust Width/Height/Safe
+  // Height, pick a tool diameter, and run "Preview AI Processing" BEFORE
+  // the project is actually created.
+  const handleStartCncProject = () => {
+    navigate("/new-project", {
+      state: {
+        existingImage: {
+          id: imageDetails.id,
+          title: imageDetails.title,
+          description: imageDetails.description,
+          is_pattern: imageDetails.is_pattern,
+          image_url: imageDetails.image_url,
+        },
+      },
+    });
+  };
 
   return (
     <Col
@@ -47,10 +78,8 @@ export const ImageInfoPanel = ({
 
           <div className="text-theme-muted d-flex align-items-center gap-2 mt-3 fw-bold small">
             <FiCalendar size={16} />
-            {t("image_details.uploaded_on")}{" "}
-            {new Date(imageDetails.created_at || Date.now()).toLocaleDateString(
-              i18n.language === "ar" ? "ar-EG" : "en-GB",
-            )}
+            {t("image_details.uploaded_on")} {" "}
+            {formattedDate}
           </div>
         </div>
 
@@ -73,17 +102,11 @@ export const ImageInfoPanel = ({
 
             <div className="d-flex flex-column gap-3">
               <Button
-                onClick={() =>
-                  navigate("/new-project", {
-                    state: {
-                      selectedImageId: imageDetails.id,
-                      selectedImageUrl: imageDetails.image_url,
-                    },
-                  })
-                }
+                onClick={handleStartCncProject}
                 className="btn-primary-custom py-3 d-flex justify-content-center align-items-center gap-2 fs-5"
               >
-                <FiPlay size={22} /> {t("image_details.btn_start_project")}
+                <FiPlay size={22} />
+                {t("image_details.btn_start_project")}
               </Button>
 
               <Button

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Col, Card, Row, Image, Badge, Modal } from "react-bootstrap";
+import React from "react";
+import { Col, Card, Row, Badge } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiActivity, FiTarget, FiSliders } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,6 @@ export const NewProjectPreview = ({
   isAnalyzing,
   fadeUpVariant,
 }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
 
   const aiResults = aiData;
@@ -82,173 +81,209 @@ export const NewProjectPreview = ({
                 </div>
 
                 <Row className="g-3">
-                  {Object.entries(aiResults.full_urls || {}).map(
-                    ([key, url]) => (
-                      <Col md={4} key={key}>
-                        <motion.div
-                          whileHover={{ scale: 1.03, y: -5 }}
-                          className="p-2 rounded-4 shadow-sm h-100 d-flex flex-column justify-content-between"
-                          style={{
-                            backgroundColor: "var(--bg-surface)",
-                            border: "1px solid var(--glass-border)",
-                            cursor: "pointer",
-                          }}
-                          onClick={() =>
-                            setSelectedImage({
-                              url,
-                              title: key.replace("_", " "),
-                              description: aiResults.stage_descriptions[key],
-                            })
-                          }
-                        >
-                          <Image
-                            src={url}
-                            fluid
-                            className="rounded-3 mb-2 w-100"
+                  {Object.entries(aiResults.full_urls || {})
+                    // إخفاء ملف السيميوليشن وملف الجي كود من هالمرحلة
+                    .filter(
+                      ([key]) =>
+                        key !== "simulation_file" && key !== "gcode_file",
+                    )
+                    .map(([key, url]) => {
+                      const isSimulation = key === "simulation_file";
+                      const description = aiResults.stage_descriptions?.[key];
+
+                      return (
+                        <Col md={4} key={key}>
+                          <motion.div
+                            whileHover={{ scale: 1.03, y: -5 }}
+                            className="p-3 rounded-4 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center text-center"
                             style={{
-                              height: "160px",
-                              objectFit: "cover",
-                              border: "1px solid rgba(0,0,0,0.1)",
+                              backgroundColor: "var(--bg-surface)",
+                              border: "1px solid var(--glass-border)",
                             }}
-                          />
-                          <div
-                            className="text-capitalize text-theme-muted small text-center fw-bold mt-auto pb-1"
-                            style={{ letterSpacing: "0.5px" }}
                           >
-                            {key.replace("_", " ")}
-                          </div>
-                        </motion.div>
-                      </Col>
-                    ),
+                            {isSimulation ? (
+                              <FiActivity className="text-info mb-2" size={32} />
+                            ) : (
+                              <FiTarget className="text-primary mb-2" size={32} />
+                            )}
+
+                            <div
+                              className="text-capitalize text-theme fw-bold mb-1"
+                              style={{ letterSpacing: "0.5px" }}
+                            >
+                              {key.replace("_", " ")}
+                            </div>
+
+                            {description && (
+                              <small className="text-theme-muted mb-3">
+                                {description}
+                              </small>
+                            )}
+
+                            {isSimulation ? (
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-sm btn-outline-info fw-bold"
+                              >
+                                {t("new_project.open_simulation", "Open Simulation")}
+                              </a>
+                            ) : (
+                              <a
+                                href={url}
+                                download
+                                className="btn btn-sm btn-outline-primary fw-bold"
+                              >
+                                {t("new_project.download_gcode", "Download G-Code")}
+                              </a>
+                            )}
+                          </motion.div>
+                        </Col>
+                      );
+                    },
                   )}
                 </Row>
 
-                {aiResults.statistics && (
-                  <div
-                    className="mt-5 p-4 rounded-4 shadow-sm"
-                    style={{
-                      backgroundColor: "var(--bg-surface)",
-                      border: "1px solid var(--glass-border)",
-                    }}
-                  >
-                    <div className="d-flex align-items-center mb-4 gap-2">
-                      <FiActivity className="text-warning" size={22} />
-                      <h6
-                        className="fw-bold mb-0 text-theme tracking-wide text-uppercase"
-                        style={{ letterSpacing: "1px" }}
-                      >
-                        {t("new_project.tech_stats")}
-                      </h6>
+                {/* NOTE: the old code here read aiResults.statistics.processing_stats
+                    and aiResults.metadata -- those keys never existed in the
+                    ai-visualize/ response, so this whole card silently never
+                    rendered. The real payload nests everything under
+                    processing_info (see AI/pipeline.py process_image_to_gcode):
+                    processing_info.coverage.report.coverage_ratio_percent,
+                    processing_info.gcode_report.points.valid,
+                    processing_info.coverage.used_tool_mm. */}
+                {aiResults.processing_info?.coverage?.report && (
+                  <>
+                    <div
+                      className="mt-5 p-4 rounded-4 shadow-sm"
+                      style={{
+                        backgroundColor: "var(--bg-surface)",
+                        border: "1px solid var(--glass-border)",
+                      }}
+                    >
+                      <div className="d-flex align-items-center mb-4 gap-2">
+                        <FiActivity className="text-warning" size={22} />
+                        <h6
+                          className="fw-bold mb-0 text-theme tracking-wide text-uppercase"
+                          style={{ letterSpacing: "1px" }}
+                        >
+                          {t("new_project.tech_stats")}
+                        </h6>
+                      </div>
+
+                      <Row className="g-3">
+                        <Col xs={4}>
+                          <div
+                            className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
+                            style={{
+                              background: "rgba(25, 135, 84, 0.1)",
+                              border: "1px solid rgba(25, 135, 84, 0.2)",
+                            }}
+                          >
+                            <div
+                              className="h3 fw-black text-success mb-1"
+                              style={{ direction: "ltr" }}
+                            >
+                              {aiResults.processing_info.coverage.report.coverage_ratio_percent.toFixed(
+                                1,
+                              )}
+                              %
+                            </div>
+                            <small
+                              className="text-success opacity-75 fw-bold text-uppercase"
+                              style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
+                            >
+                              {t("new_project.coverage_percent")}
+                            </small>
+                          </div>
+                        </Col>
+
+                        <Col xs={4}>
+                          <div
+                            className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
+                            style={{
+                              background: "rgba(13, 202, 240, 0.1)",
+                              border: "1px solid rgba(13, 202, 240, 0.2)",
+                            }}
+                          >
+                            <div
+                              className="h3 fw-black text-info mb-1"
+                              style={{ direction: "ltr" }}
+                            >
+                              {(
+                                aiResults.processing_info.gcode_report?.points
+                                  ?.valid ??
+                                aiResults.processing_info.coverage.report
+                                  .output_paths
+                              ).toLocaleString()}
+                            </div>
+                            <small
+                              className="text-info opacity-75 fw-bold text-uppercase"
+                              style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
+                            >
+                              {t("new_project.est_points")}
+                            </small>
+                          </div>
+                        </Col>
+
+                        <Col xs={4}>
+                          <div
+                            className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
+                            style={{
+                              background: "rgba(255, 193, 7, 0.1)",
+                              border: "1px solid rgba(255, 193, 7, 0.2)",
+                            }}
+                          >
+                            <div
+                              className="h3 fw-black text-warning mb-1 d-flex justify-content-center align-items-center gap-2"
+                              style={{ direction: "ltr" }}
+                            >
+                              <FiSliders size={20} />
+                              {aiResults.processing_info.coverage.used_tool_mm}
+                              mm
+                            </div>
+                            <small
+                              className="text-warning opacity-75 fw-bold text-uppercase"
+                              style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
+                            >
+                              {t("new_project.tool_used")}
+                            </small>
+                          </div>
+                        </Col>
+                      </Row>
                     </div>
 
-                    <Row className="g-3">
-                      <Col xs={4}>
-                        <div
-                          className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
-                          style={{
-                            background: "rgba(25, 135, 84, 0.1)",
-                            border: "1px solid rgba(25, 135, 84, 0.2)",
-                          }}
-                        >
-                          <div
-                            className="h3 fw-black text-success mb-1"
-                            style={{ direction: "ltr" }}
-                          >
-                            {aiResults.statistics.processing_stats.cutting_percentage.toFixed(
-                              1,
-                            )}
-                            %
-                          </div>
-                          <small
-                            className="text-success opacity-75 fw-bold text-uppercase"
-                            style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
-                          >
-                            {t("new_project.cutting_area")}
-                          </small>
-                        </div>
-                      </Col>
-
-                      <Col xs={4}>
-                        <div
-                          className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
-                          style={{
-                            background: "rgba(13, 202, 240, 0.1)",
-                            border: "1px solid rgba(13, 202, 240, 0.2)",
-                          }}
-                        >
-                          <div
-                            className="h3 fw-black text-info mb-1"
-                            style={{ direction: "ltr" }}
-                          >
-                            {aiResults.statistics.processing_stats.estimated_cutting_points.toLocaleString()}
-                          </div>
-                          <small
-                            className="text-info opacity-75 fw-bold text-uppercase"
-                            style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
-                          >
-                            {t("new_project.est_points")}
-                          </small>
-                        </div>
-                      </Col>
-
-                      <Col xs={4}>
-                        <div
-                          className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
-                          style={{
-                            background: "rgba(255, 193, 7, 0.1)",
-                            border: "1px solid rgba(255, 193, 7, 0.2)",
-                          }}
-                        >
-                          <div
-                            className="h3 fw-black text-warning mb-1 d-flex justify-content-center align-items-center gap-2"
-                            style={{ direction: "ltr" }}
-                          >
-                            <FiSliders size={20} />
-                            {aiResults.metadata?.threshold_value || 77}
-                          </div>
-                          <small
-                            className="text-warning opacity-75 fw-bold text-uppercase"
-                            style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
-                          >
-                            {t("new_project.threshold")}
-                          </small>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
+                    {/* This is the ONLY place in the whole app that surfaces whether
+                        the engine auto-switched the tool diameter. The backend always
+                        defaults auto_accept_suggested_tool=true (views.py), so today
+                        it switches silently -- this banner at least makes the swap
+                        visible after the fact, before the project is created. */}
+                    {aiResults.processing_info.coverage.switched_tool && (
+                      <div
+                        className="mt-3 p-3 rounded-4 d-flex align-items-center gap-2"
+                        style={{
+                          background: "rgba(255, 107, 0, 0.08)",
+                          border: "1px solid rgba(255, 107, 0, 0.3)",
+                        }}
+                      >
+                        <FiSliders className="text-primary flex-shrink-0" size={18} />
+                        <small className="text-theme fw-bold">
+                          {t("new_project.tool_auto_switched", {
+                            suggested:
+                              aiResults.processing_info.coverage
+                                .suggested_tool_mm,
+                          })}
+                        </small>
+                      </div>
+                    )}
+                  </>
                 )}
               </motion.div>
             )}
           </AnimatePresence>
         </Card.Body>
       </Card>
-
-      <Modal
-        show={!!selectedImage}
-        onHide={() => setSelectedImage(null)}
-        size="xl"
-        centered
-        contentClassName="border-0 shadow-lg"
-      >
-        <div style={{ backgroundColor: "var(--bg-surface)" }}>
-          <Modal.Header closeButton className="border-0 pb-0">
-            <Modal.Title className="text-capitalize fw-black text-primary">
-              {selectedImage?.title}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="text-center pt-2 pb-4">
-            <p className="text-theme-muted fw-bold mb-3">
-              {selectedImage?.description}
-            </p>
-            <Image
-              src={selectedImage?.url}
-              fluid
-              className="rounded-3 shadow-lg border border-secondary"
-              style={{ maxHeight: "80vh", width: "auto" }}
-            />
-          </Modal.Body>
-        </div>
-      </Modal>
     </Col>
   );
 };

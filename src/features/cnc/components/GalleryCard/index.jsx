@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Col,
   Card,
   Button,
   Badge,
+  Spinner,
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
@@ -11,11 +12,48 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { FiTrash2, FiPlay, FiEye } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import { projectService } from "../../services/projectService";
 import "./style.css";
+
+// Same defaults ImageInfoPanel uses when starting a project straight from
+// an existing gallery image -- the user can still tweak everything
+// (width/height/safe-Z/tool) on the project details page before hitting
+// GENERATE, so there's no need to ask for them here.
+const DEFAULT_DIMENSIONS = { x: 100, y: 100, z: 10 };
 
 export const GalleryCard = ({ img, fadeUpVariant, onDelete }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [isStarting, setIsStarting] = useState(false);
+
+  // This image already exists in the library -- there's nothing to
+  // upload. Instead of routing through /new-project (which expects a
+  // fresh File it never has for an existing image), create the CNC
+  // project directly against this image's id and jump straight to that
+  // project's details page, exactly like ImageInfoPanel's "Start CNC
+  // Project" button does from the image-details page.
+  const handleQuickGenerate = async (e) => {
+    e.stopPropagation();
+    if (isStarting) return;
+    setIsStarting(true);
+    try {
+      const response = await projectService.createProject({
+        title: `${img.title} - CNC`,
+        image: img.id,
+        dimension_x: 300,
+        dimension_y: 400,
+        dimension_z: 3,
+      });
+      const createdProject = response.data || response;
+      navigate(`/project/${createdProject.id}`);
+    } catch (err) {
+      console.error("Failed to start CNC project:", err);
+      toast.error(t("image_details.error_start_project"));
+    } finally {
+      setIsStarting(false);
+    }
+  };
 
   return (
     <Col xs={12} sm={6} lg={3}>
@@ -70,18 +108,15 @@ export const GalleryCard = ({ img, fadeUpVariant, onDelete }) => {
               >
                 <Button
                   variant="primary"
+                  disabled={isStarting}
                   className="rounded-circle p-2 d-flex align-items-center justify-content-center btn-play-circle"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate("/new-project", {
-                      state: {
-                        selectedImageId: img.id,
-                        selectedImageUrl: img.image_url,
-                      },
-                    });
-                  }}
+                  onClick={handleQuickGenerate}
                 >
-                  <FiPlay size={24} className="ms-1" />
+                  {isStarting ? (
+                    <Spinner size="sm" />
+                  ) : (
+                    <FiPlay size={24} className="ms-1" />
+                  )}
                 </Button>
               </OverlayTrigger>
 
