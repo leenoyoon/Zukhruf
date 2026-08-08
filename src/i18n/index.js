@@ -163,6 +163,7 @@ const resources = {
         step2_title: "Step 2: CNC Setup",
         width_x: "Width (X)",
         height_y: "Height (Y)",
+        min_dimension_error: "Must be at least {{min}} mm",
         safe_z: "Safe Height (Z)",
         tool_diameter: "Tool Diameter (mm)",
         tool_diameter_hint:
@@ -220,6 +221,7 @@ const resources = {
         project_title: "Project Title",
         width_x: "Width (X)",
         height_y: "Height (Y)",
+        min_dimension_error: "Must be at least {{min}} mm",
         safe_z: "Safe Height (Z)",
         saving: "SAVING...",
         save_changes: "SAVE CHANGES",
@@ -461,6 +463,7 @@ const resources = {
         step2_title: "الخطوة ٢: إعدادات الماكينة",
         width_x: "العرض (X)",
         height_y: "الطول (Y)",
+        min_dimension_error: "لازم تكون {{min}} مم على الأقل",
         safe_z: "عمق الأمان (Z)",
         tool_diameter: "قطر الريشة (مم)",
         tool_diameter_hint:
@@ -518,6 +521,7 @@ const resources = {
         project_title: "عنوان المشروع",
         width_x: "العرض (X)",
         height_y: "الطول (Y)",
+        min_dimension_error: "لازم تكون {{min}} مم على الأقل",
         safe_z: "عمق الأمان (Z)",
         saving: "جاري الحفظ...",
         save_changes: "حفظ التغييرات",

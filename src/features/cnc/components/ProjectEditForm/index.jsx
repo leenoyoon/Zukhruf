@@ -2,6 +2,10 @@ import React from "react";
 import { Card, Form, Button, Row, Col, Alert, Spinner } from "react-bootstrap";
 import { FiEdit3, FiType, FiSave } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import {
+  MIN_WOOD_DIMENSION_MM,
+  isValidWoodDimension,
+} from "../../../../shared/utils/woodDimensions";
 import "./style.css";
 
 export const ProjectEditForm = ({
@@ -17,6 +21,12 @@ export const ProjectEditForm = ({
     color: "var(--text-main)",
     borderColor: "var(--glass-border)",
   };
+
+  // Same 300mm floor as the new-project form -- kept in sync via the
+  // shared MIN_WOOD_DIMENSION_MM constant.
+  const isWidthInvalid = !isValidWoodDimension(editData.dimension_x);
+  const isHeightInvalid = !isValidWoodDimension(editData.dimension_y);
+  const hasInvalidDimensions = isWidthInvalid || isHeightInvalid;
 
   return (
     <Card className="modern-card border-0">
@@ -67,13 +77,20 @@ export const ProjectEditForm = ({
                 </Form.Label>
                 <Form.Control
                   type="number"
+                  min={MIN_WOOD_DIMENSION_MM}
                   className="project-custom-input p-2 rounded-3"
                   style={{ ...inputStyle, direction: "ltr" }}
                   value={editData.dimension_x}
                   onChange={(e) =>
                     setEditData({ ...editData, dimension_x: e.target.value })
                   }
+                  isInvalid={isWidthInvalid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {t("project_details.min_dimension_error", {
+                    min: MIN_WOOD_DIMENSION_MM,
+                  })}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col xs={6}>
@@ -83,13 +100,20 @@ export const ProjectEditForm = ({
                 </Form.Label>
                 <Form.Control
                   type="number"
+                  min={MIN_WOOD_DIMENSION_MM}
                   className="project-custom-input p-2 rounded-3"
                   style={{ ...inputStyle, direction: "ltr" }}
                   value={editData.dimension_y}
                   onChange={(e) =>
                     setEditData({ ...editData, dimension_y: e.target.value })
                   }
+                  isInvalid={isHeightInvalid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {t("project_details.min_dimension_error", {
+                    min: MIN_WOOD_DIMENSION_MM,
+                  })}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
@@ -111,7 +135,7 @@ export const ProjectEditForm = ({
 
           <Button
             onClick={handleUpdateProject}
-            disabled={isUpdating}
+            disabled={isUpdating || hasInvalidDimensions}
             variant="success"
             className="w-100 py-3 mt-2 fw-bold d-flex justify-content-center align-items-center gap-2"
             style={{

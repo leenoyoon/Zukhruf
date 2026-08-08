@@ -12,6 +12,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next"; 
 import { CoverageConfirmModal } from "../CoverageConfirmModal";
+import {
+  MIN_WOOD_DIMENSION_MM,
+  isValidWoodDimension,
+} from "../../../../shared/utils/woodDimensions";
 import "./style.css";
 
 export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
@@ -49,6 +53,13 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
     accept: { "image/*": [".jpeg", ".jpg", ".png", ".svg"] },
     multiple: false,
   });
+
+  // Wood width (X) / height (Y) must each be at least MIN_WOOD_DIMENSION_MM.
+  // Computed once here so both the field styling and the button `disabled`
+  // checks below stay in sync with each other.
+  const isWidthInvalid = !isValidWoodDimension(dimensions.x);
+  const isHeightInvalid = !isValidWoodDimension(dimensions.y);
+  const hasInvalidDimensions = isWidthInvalid || isHeightInvalid;
 
   const inputStyle = {
     backgroundColor: "var(--bg-surface)",
@@ -242,14 +253,21 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
                     </Form.Label>
                     <Form.Control
                       type="number"
+                      min={MIN_WOOD_DIMENSION_MM}
                       className="custom-input"
                       style={{ ...inputStyle, direction: 'ltr' }}
                       value={dimensions.x}
                       onChange={(e) =>
                         setDimensions({ ...dimensions, x: e.target.value })
                       }
+                      isInvalid={isWidthInvalid}
                       disabled={createdProjectId}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("new_project_sidebar.min_dimension_error", {
+                        min: MIN_WOOD_DIMENSION_MM,
+                      })}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col xs={6}>
@@ -259,14 +277,21 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
                     </Form.Label>
                     <Form.Control
                       type="number"
+                      min={MIN_WOOD_DIMENSION_MM}
                       className="custom-input"
                       style={{ ...inputStyle, direction: 'ltr' }}
                       value={dimensions.y}
                       onChange={(e) =>
                         setDimensions({ ...dimensions, y: e.target.value })
                       }
+                      isInvalid={isHeightInvalid}
                       disabled={createdProjectId}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("new_project_sidebar.min_dimension_error", {
+                        min: MIN_WOOD_DIMENSION_MM,
+                      })}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
@@ -311,7 +336,7 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
                   cheap to change the tool diameter above and try again. */}
               <Button
                 variant="outline-light"
-                disabled={isAnalyzing || createdProjectId}
+                disabled={isAnalyzing || createdProjectId || hasInvalidDimensions}
                 onClick={handleAIPreview}
                 className="w-100 py-2 fw-bold d-flex justify-content-center align-items-center gap-2"
                 style={{
@@ -334,7 +359,8 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
                   isCreatingProject ||
                   isCheckingCoverage ||
                   createdProjectId ||
-                  !uploadedImageId
+                  !uploadedImageId ||
+                  hasInvalidDimensions
                 }
                 onClick={handleCreateProject}
                 className="w-100 py-3 mt-2 fw-bold d-flex justify-content-center align-items-center gap-2"

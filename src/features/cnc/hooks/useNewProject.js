@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { imageService } from "../services/imageService";
 import { projectService } from "../services/projectService";
+import { isValidWoodDimension } from "../../../shared/utils/woodDimensions";
 
 export const useNewProject = () => {
   const navigate = useNavigate();
@@ -97,6 +98,11 @@ export const useNewProject = () => {
 
   const handleAIPreview = async () => {
     if (!file) return;
+    // Belt-and-suspenders: the button is disabled for this case too, but
+    // guard the actual request in case it's ever triggered another way.
+    if (!isValidWoodDimension(dimensions.x) || !isValidWoodDimension(dimensions.y)) {
+      return;
+    }
     setIsAnalyzing(true);
     try {
       const formData = new FormData();
@@ -170,6 +176,9 @@ export const useNewProject = () => {
   // defaults to true server-side if we don't say otherwise).
   const handleCreateProject = async () => {
     if (!uploadedImageId || !file) return;
+    if (!isValidWoodDimension(dimensions.x) || !isValidWoodDimension(dimensions.y)) {
+      return;
+    }
     setIsCheckingCoverage(true);
     try {
       const formData = new FormData();
