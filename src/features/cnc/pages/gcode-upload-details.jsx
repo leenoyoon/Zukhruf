@@ -70,9 +70,10 @@ const GcodeUploadDetailsPage = () => {
     for (const url of candidates) {
       if (!url) continue;
       if (url.includes("127.0.0.1") || url.includes("localhost")) continue;
-      return url;
+      return url.replace(/^http:\/\//i, "https://");
     }
-    return candidates.find(Boolean) || null;
+    const fallback = candidates.find(Boolean);
+    return fallback ? fallback.replace(/^http:\/\//i, "https://") : null;
   };
 
   const simUrl = pickMediaUrl(

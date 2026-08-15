@@ -26,8 +26,10 @@ export const CoverageConfirmModal = ({
 
   return (
     <Modal show={show} onHide={onCancel} centered backdrop="static">
-<Modal.Header className="border-0 pb-0" style={{ position: "relative" }}>
-  {/* زر الإغلاق — يسار دائماً بالعربي */}
+<Modal.Header
+  className="border-0 pb-0"
+  style={{ position: "relative" }}
+>
   {!isSubmitting && (
     <button
       type="button"
@@ -37,8 +39,10 @@ export const CoverageConfirmModal = ({
       style={{
         position: "absolute",
         top: "1rem",
-        left: "1rem",   // دائماً على اليسار
-        right: "auto",
+        // إنجليزي: يمين | عربي: يسار
+        ...(isRtl
+          ? { left: "1rem", right: "auto" }
+          : { right: "1rem", left: "auto" }),
         margin: 0,
         zIndex: 2,
       }}
@@ -46,10 +50,14 @@ export const CoverageConfirmModal = ({
   )}
 
   <Modal.Title
-    className="d-flex align-items-center gap-2 fs-6 fw-bold w-100 "
+    className="d-flex align-items-center gap-2 fs-6 fw-bold w-100"
+    style={{
+      // مسافة حتى ما يغطي الزر على النص
+      paddingInlineEnd: "2rem",
+    }}
   >
-    <FiAlertTriangle className="text-warning" size={20} />
-    {t("coverage_modal.title")}
+    <FiAlertTriangle className="text-warning flex-shrink-0" size={20} />
+    <span>{t("coverage_modal.title")}</span>
   </Modal.Title>
 </Modal.Header>
 
