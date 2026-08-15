@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { projectService } from "../services/projectService";
 import api from "../../../lib/axios";
 import { toast } from "react-toastify";
+import { pickMediaUrl } from "../../../shared/mediaUrl";
 
 // How often to poll GET /api/projects/<id> while status === 'processing'.
 // The AI engine run happens in a Celery worker (see cnc_app/tasks.py), so
@@ -72,12 +73,11 @@ export const useProjectDetails = (id) => {
           startPolling();
         } else if (
           projectData.status === "completed" &&
-          projectData.gcode_file_url
-        ) {
+  pickMediaUrl(projectData.gcode_file, projectData.gcode_file_url)) {
           // Project was already generated in a previous visit -- load its
           // real G-code text right away instead of leaving the terminal
           // panel showing the generic "awaiting command" placeholder.
-          loadGcodePreview(projectData.gcode_file_url);
+loadGcodePreview(pickMediaUrl(projectData.gcode_file, projectData.gcode_file_url));
         }
       } catch {
         setError("Failed to load project details.");
@@ -170,7 +170,7 @@ const handleDeleteProject = async () => {
     setProject(projectData);
     if (projectData.status === "completed") {
       toast.success("G-Code generated successfully!");
-      loadGcodePreview(projectData.gcode_file_url);
+loadGcodePreview(pickMediaUrl(projectData.gcode_file, projectData.gcode_file_url));
     } else if (projectData.status === "failed") {
       toast.error(projectData.error_message || "Failed to generate G-Code.");
       setGcodePreview(

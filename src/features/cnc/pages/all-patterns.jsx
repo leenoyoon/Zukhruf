@@ -121,7 +121,7 @@ const AllPatternsPage = () => {
                         >
                           <Card.Img
                             variant="top"
-                            src={pattern.image_url || pattern.image_file}
+src={pattern.image_file || pattern.image_url}
                             className="w-100 h-100"
                             style={{ objectFit: "cover" }}
                           />

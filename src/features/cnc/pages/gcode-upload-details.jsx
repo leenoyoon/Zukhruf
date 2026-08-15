@@ -23,6 +23,7 @@ import { useGcodeUploadDetails } from "../hooks/useGcodeUploadDetails";
 import { GcodeSimulationViewer } from "../components/GcodeSimulationViewer";
 import { ConfirmDeleteModal } from "../../../shared/components/ConfirmDeleteModal";
 import "../components/GcodeUploadCard/style.css";
+import { pickMediaUrl } from "../../../shared/mediaUrl";
 
 const GcodeUploadDetailsPage = () => {
   const { id } = useParams();
@@ -66,21 +67,16 @@ const GcodeUploadDetailsPage = () => {
     );
   }
 
-  const pickMediaUrl = (...candidates) => {
-    for (const url of candidates) {
-      if (!url) continue;
-      if (url.includes("127.0.0.1") || url.includes("localhost")) continue;
-      return url.replace(/^http:\/\//i, "https://");
-    }
-    const fallback = candidates.find(Boolean);
-    return fallback ? fallback.replace(/^http:\/\//i, "https://") : null;
-  };
+
 
   const simUrl = pickMediaUrl(
     upload.simulation_file,
-    upload.simulation_file_url
+    upload.simulation_file_url,
   );
-  const fileUrl = pickMediaUrl(upload.gcode_file, upload.gcode_file_url);
+  const fileUrl = pickMediaUrl(
+    upload.gcode_file,
+    upload.gcode_file_url,
+  );
 
   const created = upload.created_at
     ? new Date(upload.created_at).toLocaleString(

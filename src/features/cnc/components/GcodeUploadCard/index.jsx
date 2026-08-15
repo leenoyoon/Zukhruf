@@ -19,7 +19,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./style.css";
-
+import { pickMediaUrl } from "../../../../shared/mediaUrl";
 const STATUS_BADGE = {
   completed: { bg: "success", labelKey: "simulator.status_completed" },
   failed: { bg: "danger", labelKey: "simulator.status_failed" },
@@ -40,8 +40,8 @@ export const GcodeUploadCard = ({ upload, fadeUpVariant, onDelete }) => {
       )
     : "—";
 
-  const simUrl = upload.simulation_file_url || upload.simulation_file;
-  const fileUrl = upload.gcode_file_url || upload.gcode_file;
+  const simUrl = pickMediaUrl(upload.simulation_file, upload.simulation_file_url);
+  const fileUrl = pickMediaUrl(upload.gcode_file, upload.gcode_file_url);
 
   return (
     <Col xs={12} sm={6} lg={4}>

@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { MachiningReport } from "../MachiningReport";
 import "./style.css";
 import { ProgressBar } from "react-bootstrap";
+import { pickMediaUrl } from "../../../../shared/mediaUrl";
 
 export const ProjectTerminal = ({
   project,
@@ -22,6 +23,8 @@ export const ProjectTerminal = ({
   handleGenerateGCode,
 }) => {
   const { t } = useTranslation();
+    const gcodeUrl = pickMediaUrl(project?.gcode_file, project?.gcode_file_url);
+  const simUrl = pickMediaUrl(project?.simulation_file, project?.simulation_file_url);
 
   // Which panel fills the card: the text terminal (the original, single
   // full-height look) or the 3D simulation. Only one renders at a time --
@@ -29,8 +32,8 @@ export const ProjectTerminal = ({
   // card's height and broke the original layout. Tabs keep the original
   // full-bleed panel look intact and just let you switch what's inside it.
   const [activeView, setActiveView] = useState("terminal");
-  const hasSimulation = Boolean(project?.simulation_file_url);
-  const hasReport = Boolean(project?.processing_info?.gcode_report);
+  const hasSimulation = Boolean(simUrl);
+    const hasReport = Boolean(project?.processing_info?.gcode_report);
 
   // Fullscreen modal state for the 3D preview -- lets the user blow the
   // simulation up to fill the whole viewport without leaving the page.
@@ -88,17 +91,17 @@ React.useEffect(() => {
           </Button>
 
           <Button
-            href={project?.gcode_file_url || "#"}
+            href={gcodeUrl || "#"}
             target="_blank"
             download
-            disabled={!project?.gcode_file_url}
+            disabled={!gcodeUrl}
             className="px-4 py-2 fw-bold d-flex align-items-center gap-2 text-decoration-none transition-all"
             style={{
               backgroundColor: "transparent",
               border: "1px solid var(--glass-border)",
               color: "var(--text-main)",
-              opacity: !project?.gcode_file_url ? 0.5 : 1,
-              pointerEvents: !project?.gcode_file_url ? "none" : "auto",
+              opacity: !gcodeUrl ? 0.5 : 1,
+              pointerEvents: !gcodeUrl ? "none" : "auto",
             }}
           >
             <FiDownload size={18} /> {t("project_terminal.btn_download")}
@@ -160,7 +163,7 @@ React.useEffect(() => {
                 <FiMaximize2 size={16} />
               </button>
               <a
-                href={project.simulation_file_url}
+                href={simUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 title={t("project_terminal.open_new_tab")}
@@ -211,8 +214,8 @@ React.useEffect(() => {
         {activeView === "3d" && hasSimulation ? (
           <iframe
             title="gcode-3d-preview"
-            src={project.simulation_file_url}
-            className="position-absolute inset-0 w-100 h-100 border-0"
+            src={simUrl}
+                        className="position-absolute inset-0 w-100 h-100 border-0"
             style={{ backgroundColor: "#fff" }}
           />
         ) : activeView === "report" && hasReport ? (
@@ -264,8 +267,8 @@ React.useEffect(() => {
         {hasSimulation && showFullscreen && (
           <iframe
             title="gcode-3d-preview-fullscreen"
-            src={project.simulation_file_url}
-            className="position-absolute inset-0 w-100 h-100 border-0"
+            src={simUrl}
+                        className="position-absolute inset-0 w-100 h-100 border-0"
             style={{ backgroundColor: "#fff" }}
           />
         )}

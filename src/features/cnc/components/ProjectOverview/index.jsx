@@ -15,7 +15,7 @@ export const ProjectOverview = ({ project }) => {
         style={{ paddingTop: "55%", overflow: "hidden" }}
       >
         <Card.Img
-          src={project.image_url}
+src={project.image_file || project.image_url}
           className="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
         />
       </div>

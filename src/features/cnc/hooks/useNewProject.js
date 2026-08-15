@@ -67,10 +67,11 @@ export const useNewProject = () => {
     setUploadedImageId(existingImage.id);
 
     try {
-      const res = await fetch(existingImage.image_url);
+      const imgSrc = existingImage.image_file || existingImage.image_url;
+      const res = await fetch(imgSrc);
       const blob = await res.blob();
 
-      const urlPath = existingImage.image_url.split(/[?#]/)[0];
+const urlPath = imgSrc.split(/[?#]/)[0];
       const extMatch = urlPath.match(/\.([a-zA-Z0-9]+)$/);
       const extension = extMatch ? extMatch[1].toLowerCase() : "png";
       const baseName = (existingImage.title || "image").replace(
@@ -82,7 +83,7 @@ export const useNewProject = () => {
       const existingFile = new File([blob], filename, {
         type: blob.type || `image/${extension}`,
       });
-      Object.assign(existingFile, { preview: existingImage.image_url });
+      Object.assign(existingFile, { preview: imgSrc });
       setFile(existingFile);
     } catch (err) {
       console.error(

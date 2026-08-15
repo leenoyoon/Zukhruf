@@ -45,8 +45,7 @@ export const ImageInfoPanel = ({
           title: imageDetails.title,
           description: imageDetails.description,
           is_pattern: imageDetails.is_pattern,
-          image_url: imageDetails.image_url,
-        },
+image_url: imageDetails.image_file || imageDetails.image_url,        },
       },
     });
   };

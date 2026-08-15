@@ -17,6 +17,7 @@ import {
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { pickMediaUrl } from "../../../../shared/mediaUrl";
 
 // Maps a project's backend status to the Bootstrap badge variant + label
 // shown on the card. Kept as an explicit map (instead of the old
@@ -36,6 +37,8 @@ export const ProjectCard = ({ project, fadeUpVariant, onDelete }) => {
   const statusInfo =
     STATUS_BADGE[project.status] || { bg: "secondary", labelKey: null };
 
+      const gcodeUrl = pickMediaUrl(project.gcode_file, project.gcode_file_url);
+  const imageUrl = pickMediaUrl(project.image_file, project.image_url);
   return (
     <Col xs={12} sm={6} lg={4}>
       <motion.div
@@ -52,8 +55,8 @@ export const ProjectCard = ({ project, fadeUpVariant, onDelete }) => {
             style={{ paddingTop: "55%", overflow: "hidden" }}
           >
             <Card.Img
-              src={project.image_url}
-              alt={project.title}
+              src={imageUrl}
+                            alt={project.title}
               className="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
             />
             <Badge
@@ -116,28 +119,23 @@ export const ProjectCard = ({ project, fadeUpVariant, onDelete }) => {
               </OverlayTrigger>
 
               <Button
-                disabled={!project.gcode_file_url}
-                href={project.gcode_file_url}
+                disabled={!gcodeUrl}
+                href={gcodeUrl || "#"}
                 target="_blank"
                 download
                 className="flex-grow-1 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2"
                 style={{
-                  background: project.gcode_file_url
+                  background: gcodeUrl
                     ? "linear-gradient(135deg, #F47521 0%, #FF914D 100%)"
                     : "var(--bg-deep)",
-                  border: "none",
-                  color: project.gcode_file_url
-                    ? "white"
-                    : "var(--text-muted-custom)",
-                  boxShadow: project.gcode_file_url
+                  color: gcodeUrl ? "white" : "var(--text-muted-custom)",
+                  boxShadow: gcodeUrl
                     ? "0 5px 15px rgba(244, 117, 33, 0.3)"
                     : "none",
                 }}
               >
                 <FiDownload size={18} />
-                {project.gcode_file_url
-                  ? t("projects.get_nc")
-                  : t("projects.pending")}
+                {gcodeUrl ? t("projects.get_nc") : t("projects.pending")}
               </Button>
 
               <OverlayTrigger
