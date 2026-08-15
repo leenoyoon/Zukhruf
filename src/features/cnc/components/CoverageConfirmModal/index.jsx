@@ -3,19 +3,6 @@ import { Modal, Button, Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { FiAlertTriangle, FiSliders, FiArrowRight } from "react-icons/fi";
 
-// The frontend-side answer to AI_Zukhruf/main.py's old CLI prompt:
-//   "Switch to the suggested tool diameter Xmm for better coverage? [y/N]"
-// check-coverage/ (AI/pipeline.py check_tool_coverage) never switches the
-// tool on its own -- it just reports coverage_ok/suggested_tool_mm/message
-// so this modal can ask the person directly, instead of the engine
-// defaulting to auto_accept_suggested_tool=true and switching silently.
-//
-// suggested_tool_mm can be null -- that happens when NO tool in the
-// backend's list is small enough to cover the fine detail in the design
-// (see the `message` field for why). In that case there's nothing to
-// "switch" to, so we show the backend's explanation instead and let the
-// person choose between creating anyway with the current tool, or
-// cancelling to go tweak the design/tool first.
 export const CoverageConfirmModal = ({
   show,
   coverage,
@@ -24,23 +11,58 @@ export const CoverageConfirmModal = ({
   onDecline,
   onCancel,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   if (!coverage) return null;
 
   const hasSuggestion = Boolean(coverage.suggested_tool_mm);
+  const isRtl = i18n.language === "ar";
+
+  const warningMessage = t("coverage_modal.warning", {
+    tool: coverage.used_tool_mm,
+    percent: Number(coverage.report?.coverage_ratio_percent ?? 0).toFixed(1),
+    area: Number(coverage.report?.unreachable_area_mm2 ?? 0).toFixed(1),
+    suggested: coverage.suggested_tool_mm,
+  });
 
   return (
     <Modal show={show} onHide={onCancel} centered backdrop="static">
-      <Modal.Header closeButton={!isSubmitting}>
-        <Modal.Title className="d-flex align-items-center gap-2 fs-6 fw-bold text-uppercase">
-          <FiAlertTriangle className="text-warning" size={20} />
-          {t("coverage_modal.title")}
-        </Modal.Title>
-      </Modal.Header>
+<Modal.Header className="border-0 pb-0" style={{ position: "relative" }}>
+  {/* زر الإغلاق — يسار دائماً بالعربي */}
+  {!isSubmitting && (
+    <button
+      type="button"
+      className="btn-close"
+      onClick={onCancel}
+      aria-label="Close"
+      style={{
+        position: "absolute",
+        top: "1rem",
+        left: "1rem",   // دائماً على اليسار
+        right: "auto",
+        margin: 0,
+        zIndex: 2,
+      }}
+    />
+  )}
+
+  <Modal.Title
+    className="d-flex align-items-center gap-2 fs-6 fw-bold w-100 "
+  >
+    <FiAlertTriangle className="text-warning" size={20} />
+    {t("coverage_modal.title")}
+  </Modal.Title>
+</Modal.Header>
 
       <Modal.Body>
         <p className="text-theme-muted mb-4" style={{ lineHeight: 1.6 }}>
-          {coverage.message}
+          {hasSuggestion
+            ? warningMessage
+            : t("coverage_modal.no_suggestion", {
+                tool: coverage.used_tool_mm,
+                percent: Number(
+                  coverage.report?.coverage_ratio_percent ?? 0,
+                ).toFixed(1),
+              })}
         </p>
 
         {hasSuggestion ? (
@@ -49,6 +71,7 @@ export const CoverageConfirmModal = ({
             style={{
               backgroundColor: "var(--bg-surface)",
               border: "1px solid var(--glass-border)",
+              flexDirection: isRtl ? "row-reverse" : "row",
             }}
           >
             <div className="text-center">
@@ -60,25 +83,26 @@ export const CoverageConfirmModal = ({
               </div>
             </div>
 
-            <FiArrowRight className="text-theme-muted mx-2 flex-shrink-0" size={20} />
+            <FiArrowRight
+              className="text-theme-muted mx-2"
+              size={20}
+              style={{ transform: isRtl ? "scaleX(-1)" : "none" }}
+            />
 
             <div className="text-center">
               <small className="text-success text-uppercase d-block mb-1">
                 {t("coverage_modal.suggested_tool")}
               </small>
               <div
-                className="h4 fw-black text-success mb-0 d-flex align-items-center gap-2 justify-content-center"
+                className="h4 fw-black text-success mb-0 d-flex align-items-center justify-content-center gap-1"
                 style={{ direction: "ltr" }}
               >
-                <FiSliders size={18} />
+                <FiSliders size={16} />
                 {coverage.suggested_tool_mm}mm
               </div>
             </div>
           </div>
         ) : (
-          // No smaller tool exists in the backend's list -- there's
-          // nothing to switch to, just the current tool and the coverage
-          // it falls short by.
           <div
             className="d-flex align-items-center justify-content-between p-3 rounded-4"
             style={{

@@ -22,8 +22,6 @@ export const ProjectEditForm = ({
     borderColor: "var(--glass-border)",
   };
 
-  // Same 300mm floor as the new-project form -- kept in sync via the
-  // shared MIN_WOOD_DIMENSION_MM constant.
   const isWidthInvalid = !isValidWoodDimension(editData.dimension_x);
   const isHeightInvalid = !isValidWoodDimension(editData.dimension_y);
   const hasInvalidDimensions = isWidthInvalid || isHeightInvalid;
@@ -55,6 +53,7 @@ export const ProjectEditForm = ({
         </Alert>
 
         <Form className="d-flex flex-column gap-3">
+          {/* Project Title */}
           <Form.Group>
             <Form.Label className="text-theme fw-bold small d-flex align-items-center gap-2">
               <FiType /> {t("project_details.project_title")}
@@ -69,6 +68,7 @@ export const ProjectEditForm = ({
             />
           </Form.Group>
 
+          {/* Width + Height */}
           <Row className="g-2">
             <Col xs={6}>
               <Form.Group>
@@ -118,20 +118,125 @@ export const ProjectEditForm = ({
             </Col>
           </Row>
 
-          <Form.Group>
-            <Form.Label className="text-theme fw-bold small">
-              {t("project_details.safe_z")}
-            </Form.Label>
-            <Form.Control
-              type="number"
-              className="project-custom-input p-2 rounded-3"
-              style={{ ...inputStyle, direction: "ltr" }}
-              value={editData.dimension_z}
-              onChange={(e) =>
-                setEditData({ ...editData, dimension_z: e.target.value })
-              }
-            />
-          </Form.Group>
+          {/* Cut Depth + Safe Z */}
+          <Row className="g-2">
+            <Col xs={6}>
+              <Form.Group>
+                <Form.Label className="text-theme fw-bold small">
+                  {t("project_details.cut_depth")} (mm)
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  step="0.1"
+                  className="project-custom-input p-2 rounded-3"
+                  style={{ ...inputStyle, direction: "ltr" }}
+                  value={editData.dimension_z}
+                  onChange={(e) =>
+                    setEditData({ ...editData, dimension_z: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={6}>
+              <Form.Group>
+                <Form.Label className="text-theme fw-bold small">
+                  {t("project_details.safe_z")} (mm)
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  step="0.1"
+                  min="0.5"
+                  className="project-custom-input p-2 rounded-3"
+                  style={{ ...inputStyle, direction: "ltr" }}
+                  value={editData.safe_z ?? 5}
+                  onChange={(e) =>
+                    setEditData({ ...editData, safe_z: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          {/* Feed Rate + Plunge Rate */}
+          <Row className="g-2">
+            <Col xs={6}>
+              <Form.Group>
+                <Form.Label className="text-theme fw-bold small">
+                  {t("project_details.feed_rate")} (mm/min)
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  min="50"
+                  className="project-custom-input p-2 rounded-3"
+                  style={{ ...inputStyle, direction: "ltr" }}
+                  value={editData.feed_rate ?? 800}
+                  onChange={(e) =>
+                    setEditData({ ...editData, feed_rate: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={6}>
+              <Form.Group>
+                <Form.Label className="text-theme fw-bold small">
+                  {t("project_details.plunge_rate")} (mm/min)
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  min="20"
+                  className="project-custom-input p-2 rounded-3"
+                  style={{ ...inputStyle, direction: "ltr" }}
+                  value={editData.plunge_rate ?? 300}
+                  onChange={(e) =>
+                    setEditData({ ...editData, plunge_rate: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          {/* Spindle + Machine Rate */}
+          <Row className="g-2">
+            <Col xs={6}>
+              <Form.Group>
+                <Form.Label className="text-theme fw-bold small">
+                  {t("project_details.spindle_speed")} (RPM)
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  min="3000"
+                  step="100"
+                  className="project-custom-input p-2 rounded-3"
+                  style={{ ...inputStyle, direction: "ltr" }}
+                  value={editData.spindle_speed ?? 12000}
+                  onChange={(e) =>
+                    setEditData({ ...editData, spindle_speed: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={6}>
+              <Form.Group>
+                <Form.Label className="text-theme fw-bold small">
+                  {t("project_details.machine_hourly_rate")} ($/hr)
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  min="0"
+                  step="1"
+                  className="project-custom-input p-2 rounded-3"
+                  style={{ ...inputStyle, direction: "ltr" }}
+                  value={editData.machine_hourly_rate ?? 20}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      machine_hourly_rate: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </Col>
+          </Row>
 
           <Button
             onClick={handleUpdateProject}

@@ -6,6 +6,8 @@ import { FiPlus, FiLayers } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { useProjects } from "../hooks/useProjects";
 import { ProjectCard } from "../components/ProjectCard";
+import { useState } from "react";
+import { ConfirmDeleteModal } from "../../../shared/components/ConfirmDeleteModal";
 
 const ProjectsPage = () => {
   const navigate = useNavigate();
@@ -18,6 +20,28 @@ const ProjectsPage = () => {
     handleLoadMore,
     handleDelete,
   } = useProjects();
+  const [showDelete, setShowDelete] = useState(false);
+const [deleting, setDeleting] = useState(false);
+const [selectedId, setSelectedId] = useState(null);
+const [selectedName, setSelectedName] = useState("");
+
+const askDelete = (id, name = "") => {
+  setSelectedId(id);
+  setSelectedName(name);
+  setShowDelete(true);
+};
+
+const confirmDelete = async () => {
+  if (!selectedId) return;
+  setDeleting(true);
+  try {
+    await handleDelete(selectedId);
+    setShowDelete(false);
+    setSelectedId(null);
+  } finally {
+    setDeleting(false);
+  }
+};
 
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 30 },
@@ -81,7 +105,7 @@ const ProjectsPage = () => {
                   key={proj.id}
                   project={proj}
                   fadeUpVariant={fadeUpVariant}
-                  onDelete={handleDelete}
+                  onDelete={(id) => askDelete(id)}
                 />
               ))}
             </AnimatePresence>
@@ -110,6 +134,18 @@ const ProjectsPage = () => {
           )}
         </>
       )}
+      <ConfirmDeleteModal
+  show={showDelete}
+  itemName={selectedName}
+  isLoading={deleting}
+  onConfirm={confirmDelete}
+  onCancel={() => {
+    if (!deleting) {
+      setShowDelete(false);
+      setSelectedId(null);
+    }
+  }}
+/>
     </Container>
   );
 };

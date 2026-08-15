@@ -46,6 +46,17 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
     handleAcceptSuggestedTool,
     handleDeclineSuggestedTool,
     handleCancelCreation,
+    // الحقول الجديدة
+    feedRate,
+    setFeedRate,
+    plungeRate,
+    setPlungeRate,
+    spindleSpeed,
+    setSpindleSpeed,
+    safeZ,
+    setSafeZ,
+    machineHourlyRate,
+    setMachineHourlyRate,
   } = hookData;
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -295,32 +306,55 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
                   </Form.Group>
                 </Col>
               </Row>
+              {/* Cut Depth — عمق القطع داخل الخشب */}
               <Form.Group>
                 <Form.Label className="text-theme fw-bold small">
-                  {t("new_project_sidebar.safe_z")}
+                  {t("new_project_sidebar.cut_depth")} (mm)
                 </Form.Label>
                 <Form.Control
                   type="number"
+                  step="0.1"
                   className="custom-input"
-                  style={{ ...inputStyle, direction: 'ltr' }}
+                  style={{ ...inputStyle, direction: "ltr" }}
                   value={dimensions.z}
                   onChange={(e) =>
                     setDimensions({ ...dimensions, z: e.target.value })
                   }
                   disabled={createdProjectId}
                 />
+                <Form.Text className="text-theme-muted">
+                  {t("new_project_sidebar.cut_depth_hint")}
+                </Form.Text>
               </Form.Group>
 
+              {/* Safe Z — ارتفاع الأمان فوق السطح */}
               <Form.Group>
                 <Form.Label className="text-theme fw-bold small">
-                  {t("new_project_sidebar.tool_diameter")}
+                  {t("new_project_sidebar.safe_z")} (mm)
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  step="0.1"
+                  min="0.5"
+                  className="custom-input"
+                  style={{ ...inputStyle, direction: "ltr" }}
+                  value={safeZ}
+                  onChange={(e) => setSafeZ(e.target.value)}
+                  disabled={createdProjectId}
+                />
+              </Form.Group>
+
+              {/* Tool Diameter */}
+              <Form.Group>
+                <Form.Label className="text-theme fw-bold small">
+                  {t("new_project_sidebar.tool_diameter")} (mm)
                 </Form.Label>
                 <Form.Control
                   type="number"
                   step="0.1"
                   min="0.1"
                   className="custom-input"
-                  style={{ ...inputStyle, direction: 'ltr' }}
+                  style={{ ...inputStyle, direction: "ltr" }}
                   value={toolDiaMm}
                   onChange={(e) => setToolDiaMm(e.target.value)}
                   disabled={createdProjectId}
@@ -330,13 +364,87 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
                 </Form.Text>
               </Form.Group>
 
+              {/* Feed Rate + Plunge Rate */}
+              <Row className="g-2">
+                <Col xs={6}>
+                  <Form.Group>
+                    <Form.Label className="text-theme fw-bold small">
+                      {t("new_project_sidebar.feed_rate")} (mm/min)
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      min="50"
+                      className="custom-input"
+                      style={{ ...inputStyle, direction: "ltr" }}
+                      value={feedRate}
+                      onChange={(e) => setFeedRate(e.target.value)}
+                      disabled={createdProjectId}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={6}>
+                  <Form.Group>
+                    <Form.Label className="text-theme fw-bold small">
+                      {t("new_project_sidebar.plunge_rate")} (mm/min)
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      min="20"
+                      className="custom-input"
+                      style={{ ...inputStyle, direction: "ltr" }}
+                      value={plungeRate}
+                      onChange={(e) => setPlungeRate(e.target.value)}
+                      disabled={createdProjectId}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              {/* Spindle Speed + Machine Hourly Rate */}
+              <Row className="g-2">
+                <Col xs={6}>
+                  <Form.Group>
+                    <Form.Label className="text-theme fw-bold small">
+                      {t("new_project_sidebar.spindle_speed")} (RPM)
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      min="3000"
+                      step="100"
+                      className="custom-input"
+                      style={{ ...inputStyle, direction: "ltr" }}
+                      value={spindleSpeed}
+                      onChange={(e) => setSpindleSpeed(e.target.value)}
+                      disabled={createdProjectId}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={6}>
+                  <Form.Group>
+                    <Form.Label className="text-theme fw-bold small">
+                      {t("new_project_sidebar.machine_hourly_rate")} ($/hr)
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      min="0"
+                      step="1"
+                      className="custom-input"
+                      style={{ ...inputStyle, direction: "ltr" }}
+                      value={machineHourlyRate}
+                      onChange={(e) => setMachineHourlyRate(e.target.value)}
+                      disabled={createdProjectId}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+
               {/* Runs ai-visualize/ with the chosen dimensions + tool diameter
                   BEFORE creating the project, so coverage/auto-switch info
                   (shown in NewProjectPreview) is visible while it's still
                   cheap to change the tool diameter above and try again. */}
               <Button
                 variant="outline-light"
-                disabled={isAnalyzing || createdProjectId || hasInvalidDimensions}
+                disabled={isAnalyzing || createdProjectId || hasInvalidDimensions || !uploadedImageId}
                 onClick={handleAIPreview}
                 className="w-100 py-2 fw-bold d-flex justify-content-center align-items-center gap-2"
                 style={{

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDashboard } from "../hooks/useDashboard";
 import { HeroSection } from "../components/HeroSection";
-import { StatsSection } from "../components/StatsSection";
+import { FeaturesSection } from "../components/StatsSection";
 import { StepsSection } from "../components/StepsSection";
 import { PatternsSection } from "../components/PatternsSection";
 import { CtaSection } from "../components/CtaSection";
@@ -27,7 +27,7 @@ const HomePage = () => {
     <div className="pb-5" style={{ overflowX: "hidden" }}>
       <div className="bg-mesh" />
       <HeroSection fadeUpVariant={fadeUpVariant} />
-      <StatsSection />
+      <FeaturesSection />
       <StepsSection
         fadeUpVariant={fadeUpVariant}
         staggerContainer={staggerContainer}

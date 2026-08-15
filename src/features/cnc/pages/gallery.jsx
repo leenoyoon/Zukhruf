@@ -13,6 +13,8 @@ import { FiPlus, FiImage, FiGrid } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { useGallery } from "../hooks/useGallery";
 import { GalleryCard } from "../components/GalleryCard";
+import { useState } from "react";
+import { ConfirmDeleteModal } from "../../../shared/components/ConfirmDeleteModal";
 
 const GalleryPage = () => {
   const navigate = useNavigate();
@@ -27,6 +29,28 @@ const GalleryPage = () => {
     handleLoadMore,
     handleDelete,
   } = useGallery();
+  const [showDelete, setShowDelete] = useState(false);
+const [deleting, setDeleting] = useState(false);
+const [selectedId, setSelectedId] = useState(null);
+const [selectedName, setSelectedName] = useState("");
+
+const askDelete = (id, name = "") => {
+  setSelectedId(id);
+  setSelectedName(name);
+  setShowDelete(true);
+};
+
+const confirmDelete = async () => {
+  if (!selectedId) return;
+  setDeleting(true);
+  try {
+    await handleDelete(selectedId);
+    setShowDelete(false);
+    setSelectedId(null);
+  } finally {
+    setDeleting(false);
+  }
+};
 
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 30 },
@@ -118,7 +142,7 @@ const GalleryPage = () => {
                   key={img.id}
                   img={img}
                   fadeUpVariant={fadeUpVariant}
-                  onDelete={handleDelete}
+                  onDelete={(id) => askDelete(id)}
                 />
               ))}
             </AnimatePresence>
@@ -147,6 +171,18 @@ const GalleryPage = () => {
           )}
         </>
       )}
+      <ConfirmDeleteModal
+  show={showDelete}
+  itemName={selectedName}
+  isLoading={deleting}
+  onConfirm={confirmDelete}
+  onCancel={() => {
+    if (!deleting) {
+      setShowDelete(false);
+      setSelectedId(null);
+    }
+  }}
+/>
     </Container>
   );
 };

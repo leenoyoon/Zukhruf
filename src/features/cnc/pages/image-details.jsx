@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import { useImageDetails } from "../hooks/useImageDetails";
 import { ImageDisplay } from "../components/ImageDisplay";
 import { ImageInfoPanel } from "../components/ImageInfoPanel";
+import { useState } from "react";
+import { ConfirmDeleteModal } from "../../../shared/components/ConfirmDeleteModal";
 
 const ImageDetailsPage = () => {
   const { id } = useParams();
@@ -24,6 +26,19 @@ const ImageDetailsPage = () => {
       transition: { duration: 0.5, ease: "easeOut" },
     },
   };
+  const [showDelete, setShowDelete] = useState(false);
+const [deleting, setDeleting] = useState(false);
+
+const askDelete = () => setShowDelete(true);
+
+const confirmDelete = async () => {
+  setDeleting(true);
+  try {
+    await handleDelete();
+  } finally {
+    setDeleting(false);
+  }
+};
 
   const slideRightVariant = {
     hidden: { opacity: 0, x: 50 },
@@ -78,10 +93,17 @@ const ImageDetailsPage = () => {
         />
         <ImageInfoPanel
           imageDetails={imageDetails}
-          handleDelete={handleDelete}
+          handleDelete={askDelete}
           slideRightVariant={slideRightVariant}
         />
       </Row>
+      <ConfirmDeleteModal
+  show={showDelete}
+  itemName={imageDetails?.title}
+  isLoading={deleting}
+  onConfirm={confirmDelete}
+  onCancel={() => !deleting && setShowDelete(false)}
+/>
     </Container>
   );
 };

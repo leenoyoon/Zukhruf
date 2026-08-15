@@ -1,5 +1,5 @@
 .gcode-terminal {
-  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-family: "Fira Code", "Courier New", Courier, monospace;
   font-size: 0.85rem;
   line-height: 1.5;
   white-space: pre-wrap;
@@ -11,4 +11,13 @@
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+.gcode-progress {
+  background-color: var(--glass-border) !important;
+  overflow: hidden;
+}
+
+.gcode-progress .progress-bar {
+  background: linear-gradient(90deg, #16a34a, #22c55e) !important;
 }

@@ -1,0 +1,78 @@
+/* يورّث خط Cairo من body */
+.gcode-card,
+.gcode-card * {
+  font-family: "Cairo", sans-serif !important;
+}
+
+.gcode-action-btn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  border-width: 1.5px;
+}
+
+/* Download */
+.gcode-btn-download {
+  color: var(--text-main);
+  border-color: var(--glass-border);
+  background: transparent;
+}
+.gcode-btn-download:hover {
+  color: var(--primary-orange) !important;
+  border-color: var(--primary-orange) !important;
+  background: rgba(255, 107, 0, 0.08) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(255, 107, 0, 0.15);
+}
+
+/* Delete */
+.gcode-btn-delete {
+  color: #dc3545;
+  border-color: rgba(220, 53, 69, 0.35);
+  background: transparent;
+}
+.gcode-btn-delete:hover {
+  color: #fff !important;
+  border-color: #dc3545 !important;
+  background: #dc3545 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(220, 53, 69, 0.25);
+}
+
+.gcode-details-btn {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  font-family: "Cairo", sans-serif !important;
+  padding: 8px 16px !important;
+  transition: all 0.25s ease;
+}
+
+.gcode-details-btn-download {
+  color: var(--text-main) !important;
+  border: 1.5px solid var(--glass-border) !important;
+  background: transparent !important;
+}
+.gcode-details-btn-download:hover {
+  color: var(--primary-orange) !important;
+  border-color: var(--primary-orange) !important;
+  background: rgba(255, 107, 0, 0.08) !important;
+  transform: translateY(-2px);
+}
+
+.gcode-details-btn-delete {
+  color: #dc3545 !important;
+  border: 1.5px solid rgba(220, 53, 69, 0.4) !important;
+  background: transparent !important;
+}
+.gcode-details-btn-delete:hover {
+  color: #fff !important;
+  background: #dc3545 !important;
+  border-color: #dc3545 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(220, 53, 69, 0.25);
+}

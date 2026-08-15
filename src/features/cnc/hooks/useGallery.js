@@ -42,18 +42,14 @@ export const useGallery = () => {
     fetchImages(nextPage, filter, true);
   };
 
-  const handleDelete = async (id) => {
-    if (
-      window.confirm("Are you sure you want to permanently delete this image?")
-    ) {
-      try {
-        await imageService.deleteImage(id);
-        setImages(images.filter((img) => img.id !== id));
-      } catch (err) {
-        console.error("Delete failed", err);
-      }
-    }
-  };
+const handleDelete = async (id) => {
+  try {
+    await imageService.deleteImage(id);
+    setImages((prev) => prev.filter((img) => img.id !== id));
+  } catch (err) {
+    console.error("Delete failed", err);
+  }
+};
 
   return {
     images,

@@ -18,9 +18,23 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+// Maps a project's backend status to the Bootstrap badge variant + label
+// shown on the card. Kept as an explicit map (instead of the old
+// ternary that only distinguished "completed" vs "everything else") so
+// "failed" gets its own red/"danger" treatment instead of being lumped
+// in with "processing"/"pending" under the same yellow/"warning" color.
+const STATUS_BADGE = {
+  completed: { bg: "success", labelKey: "projects.status_completed" },
+  failed: { bg: "danger", labelKey: "projects.status_failed" },
+  processing: { bg: "warning", labelKey: "projects.status_processing_badge" },
+  pending: { bg: "warning", labelKey: "projects.status_processing_badge" },
+};
+
 export const ProjectCard = ({ project, fadeUpVariant, onDelete }) => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const statusInfo =
+    STATUS_BADGE[project.status] || { bg: "secondary", labelKey: null };
 
   return (
     <Col xs={12} sm={6} lg={4}>
@@ -43,12 +57,12 @@ export const ProjectCard = ({ project, fadeUpVariant, onDelete }) => {
               className="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
             />
             <Badge
-              bg={project.status === "completed" ? "success" : "warning"}
+              bg={statusInfo.bg}
               className="position-absolute top-0 end-0 m-3 px-3 py-2 fw-bold rounded-pill shadow-sm text-uppercase"
               style={{ letterSpacing: "1px", fontSize: "10px" }}
             >
-              {project.status === "completed"
-                ? t("projects.status_completed")
+              {statusInfo.labelKey
+                ? t(statusInfo.labelKey)
                 : project.status || t("projects.status_unknown")}
             </Badge>
           </div>

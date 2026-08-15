@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Card, Row, Badge } from "react-bootstrap";
+import { Col, Card, Row } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiActivity, FiTarget, FiSliders } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,8 @@ export const NewProjectPreview = ({
   const { t } = useTranslation();
 
   const aiResults = aiData;
+  const coverage = aiResults?.processing_info?.coverage;
+  const report = coverage?.report;
 
   return (
     <Col
@@ -82,7 +84,6 @@ export const NewProjectPreview = ({
 
                 <Row className="g-3">
                   {Object.entries(aiResults.full_urls || {})
-                    // إخفاء ملف السيميوليشن وملف الجي كود من هالمرحلة
                     .filter(
                       ([key]) =>
                         key !== "simulation_file" && key !== "gcode_file",
@@ -141,19 +142,10 @@ export const NewProjectPreview = ({
                           </motion.div>
                         </Col>
                       );
-                    },
-                  )}
+                    })}
                 </Row>
 
-                {/* NOTE: the old code here read aiResults.statistics.processing_stats
-                    and aiResults.metadata -- those keys never existed in the
-                    ai-visualize/ response, so this whole card silently never
-                    rendered. The real payload nests everything under
-                    processing_info (see AI/pipeline.py process_image_to_gcode):
-                    processing_info.coverage.report.coverage_ratio_percent,
-                    processing_info.gcode_report.points.valid,
-                    processing_info.coverage.used_tool_mm. */}
-                {aiResults.processing_info?.coverage?.report && (
+                {report && (
                   <>
                     <div
                       className="mt-5 p-4 rounded-4 shadow-sm"
@@ -172,34 +164,78 @@ export const NewProjectPreview = ({
                         </h6>
                       </div>
 
-                      <Row className="g-3">
-                        <Col xs={4}>
+                      {/* مقارنة التغطية: الأداة المختارة vs المقترحة */}
+                      <Row className="g-3 mb-3">
+                        {/* الأداة المختارة */}
+                        <Col xs={12} md={coverage?.suggested_tool_mm != null ? 6 : 12}>
                           <div
                             className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
                             style={{
                               background: "rgba(25, 135, 84, 0.1)",
-                              border: "1px solid rgba(25, 135, 84, 0.2)",
+                              border: "1px solid rgba(25, 135, 84, 0.25)",
                             }}
                           >
                             <div
-                              className="h3 fw-black text-success mb-1"
+                              className="h4 fw-bold text-success mb-1 d-flex justify-content-center align-items-center gap-2"
                               style={{ direction: "ltr" }}
                             >
-                              {aiResults.processing_info.coverage.report.coverage_ratio_percent.toFixed(
-                                1,
-                              )}
-                              %
+                              <FiSliders size={18} />
+                              {coverage.used_tool_mm} mm
                             </div>
-                            <small
-                              className="text-success opacity-75 fw-bold text-uppercase"
-                              style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
+                            <small className="text-theme-muted d-block mb-2">
+                              {t("new_project.chosen_tool")}
+                            </small>
+                            <div
+                              className="h3 fw-black text-success mb-0"
+                              style={{ direction: "ltr" }}
                             >
+                              {Number(report.coverage_ratio_percent).toFixed(1)}%
+                            </div>
+                            <small className="text-success opacity-75">
                               {t("new_project.coverage_percent")}
                             </small>
                           </div>
                         </Col>
 
-                        <Col xs={4}>
+                        {/* الأداة المقترحة */}
+                        {coverage?.suggested_tool_mm != null && (
+                          <Col xs={12} md={6}>
+                            <div
+                              className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
+                              style={{
+                                background: "rgba(255, 107, 0, 0.08)",
+                                border: "1px solid rgba(255, 107, 0, 0.3)",
+                              }}
+                            >
+                              <div
+                                className="h4 fw-bold text-warning mb-1 d-flex justify-content-center align-items-center gap-2"
+                                style={{ direction: "ltr" }}
+                              >
+                                <FiSliders size={18} />
+                                {coverage.suggested_tool_mm} mm
+                              </div>
+                              <small className="text-theme-muted d-block mb-2">
+                                {t("new_project.suggested_tool")}
+                              </small>
+                              <div
+                                className="h3 fw-black text-warning mb-0"
+                                style={{ direction: "ltr" }}
+                              >
+                                {coverage.suggested_coverage_percent != null
+                                  ? `${Number(coverage.suggested_coverage_percent).toFixed(1)}%`
+                                  : "≈ 99%+"}
+                              </div>
+                              <small className="text-warning opacity-75">
+                                {t("new_project.coverage_percent")}
+                              </small>
+                            </div>
+                          </Col>
+                        )}
+                      </Row>
+
+                      {/* باقي الإحصائيات */}
+                      <Row className="g-3">
+                        <Col xs={6}>
                           <div
                             className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
                             style={{
@@ -213,9 +249,7 @@ export const NewProjectPreview = ({
                             >
                               {(
                                 aiResults.processing_info.gcode_report?.points
-                                  ?.valid ??
-                                aiResults.processing_info.coverage.report
-                                  .output_paths
+                                  ?.valid ?? report.output_paths
                               ).toLocaleString()}
                             </div>
                             <small
@@ -227,39 +261,50 @@ export const NewProjectPreview = ({
                           </div>
                         </Col>
 
-                        <Col xs={4}>
+                        <Col xs={6}>
                           <div
                             className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
                             style={{
-                              background: "rgba(255, 193, 7, 0.1)",
-                              border: "1px solid rgba(255, 193, 7, 0.2)",
+                              background: "rgba(108, 117, 125, 0.1)",
+                              border: "1px solid rgba(108, 117, 125, 0.2)",
                             }}
                           >
                             <div
-                              className="h3 fw-black text-warning mb-1 d-flex justify-content-center align-items-center gap-2"
+                              className="h3 fw-black text-theme mb-1"
                               style={{ direction: "ltr" }}
                             >
-                              <FiSliders size={20} />
-                              {aiResults.processing_info.coverage.used_tool_mm}
-                              mm
+                              {report.unreachable_area_mm2 != null
+                                ? Number(report.unreachable_area_mm2).toFixed(1)
+                                : "—"}
                             </div>
                             <small
-                              className="text-warning opacity-75 fw-bold text-uppercase"
+                              className="text-theme-muted fw-bold text-uppercase"
                               style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
                             >
-                              {t("new_project.tool_used")}
+                              {t("new_project.unreachable_area")} mm²
                             </small>
                           </div>
                         </Col>
                       </Row>
                     </div>
 
-                    {/* This is the ONLY place in the whole app that surfaces whether
-                        the engine auto-switched the tool diameter. The backend always
-                        defaults auto_accept_suggested_tool=true (views.py), so today
-                        it switches silently -- this banner at least makes the swap
-                        visible after the fact, before the project is created. */}
-                    {aiResults.processing_info.coverage.switched_tool && (
+                    {/* رسالة المحرك */}
+                    {coverage?.message && !coverage.coverage_ok && (
+                      <div
+                        className="mt-3 p-3 rounded-4 d-flex align-items-start gap-2"
+                        style={{
+                          background: "rgba(255, 107, 0, 0.08)",
+                          border: "1px solid rgba(255, 107, 0, 0.3)",
+                        }}
+                      >
+                        <FiSliders className="text-primary flex-shrink-0 mt-1" size={18} />
+                        <small className="text-theme fw-bold">
+                          {coverage.message}
+                        </small>
+                      </div>
+                    )}
+
+                    {coverage?.switched_tool && (
                       <div
                         className="mt-3 p-3 rounded-4 d-flex align-items-center gap-2"
                         style={{
@@ -270,9 +315,7 @@ export const NewProjectPreview = ({
                         <FiSliders className="text-primary flex-shrink-0" size={18} />
                         <small className="text-theme fw-bold">
                           {t("new_project.tool_auto_switched", {
-                            suggested:
-                              aiResults.processing_info.coverage
-                                .suggested_tool_mm,
+                            suggested: coverage.suggested_tool_mm,
                           })}
                         </small>
                       </div>

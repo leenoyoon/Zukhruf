@@ -20,7 +20,12 @@ export const useProjectDetails = (id) => {
     title: "",
     dimension_x: 0,
     dimension_y: 0,
-    dimension_z: 0,
+    dimension_z: -3, // cut depth
+    safe_z: 5,
+    feed_rate: 800,
+    plunge_rate: 300,
+    spindle_speed: 12000,
+    machine_hourly_rate: 20,
   });
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -47,10 +52,16 @@ export const useProjectDetails = (id) => {
 
         setProject(projectData);
         setEditData({
-          title: projectData.title,
-          dimension_x: 300,
-          dimension_y: 400,
-          dimension_z: -3,
+          title: projectData.title || "",
+          dimension_x: projectData.dimension_x ?? 300,
+          dimension_y: projectData.dimension_y ?? 400,
+          dimension_z: projectData.dimension_z ?? -3, // cut depth
+          safe_z: projectData.cutting_settings?.safe_z ?? 5,
+          feed_rate: projectData.cutting_settings?.feed_rate ?? 800,
+          plunge_rate: projectData.cutting_settings?.plunge_rate ?? 300,
+          spindle_speed: projectData.cutting_settings?.spindle_speed ?? 12000,
+          machine_hourly_rate:
+            projectData.cutting_settings?.machine_hourly_rate ?? 20,
         });
 
         // If we land on this page while a previous generation is still
@@ -82,7 +93,21 @@ export const useProjectDetails = (id) => {
   const handleUpdateProject = async () => {
     setIsUpdating(true);
     try {
-      const response = await projectService.updateProject(id, editData);
+      const payload = {
+        title: editData.title,
+        dimension_x: Number(editData.dimension_x),
+        dimension_y: Number(editData.dimension_y),
+        dimension_z: Number(editData.dimension_z), // cut depth
+        cutting_settings: {
+          safe_z: Number(editData.safe_z),
+          feed_rate: Number(editData.feed_rate),
+          plunge_rate: Number(editData.plunge_rate),
+          spindle_speed: Number(editData.spindle_speed),
+          machine_hourly_rate: Number(editData.machine_hourly_rate),
+        },
+      };
+
+      const response = await projectService.updateProject(id, payload);
       const updatedProject = response.data || response;
       setProject(updatedProject);
 
@@ -100,17 +125,15 @@ export const useProjectDetails = (id) => {
     }
   };
 
-  const handleDeleteProject = async () => {
-    if (window.confirm("Are you sure you want to delete this project?")) {
-      try {
-        await projectService.deleteProject(id);
-        toast.success("Project deleted successfully.");
-        navigate("/projects");
-      } catch {
-        toast.error("Failed to delete project.");
-      }
-    }
-  };
+const handleDeleteProject = async () => {
+  try {
+    await projectService.deleteProject(id);
+    toast.success("Project deleted successfully.");
+    navigate("/projects");
+  } catch {
+    toast.error("Failed to delete project.");
+  }
+};
 
   // Best-effort: once the project is 'completed', fetch the actual .gcode
   // file text so the terminal panel shows real content instead of just a

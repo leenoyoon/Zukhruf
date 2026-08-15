@@ -13,6 +13,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { MachiningReport } from "../MachiningReport";
 import "./style.css";
+import { ProgressBar } from "react-bootstrap";
 
 export const ProjectTerminal = ({
   project,
@@ -34,6 +35,23 @@ export const ProjectTerminal = ({
   // Fullscreen modal state for the 3D preview -- lets the user blow the
   // simulation up to fill the whole viewport without leaving the page.
   const [showFullscreen, setShowFullscreen] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+React.useEffect(() => {
+  if (!isGenerating) {
+    setProgress(0);
+    return;
+  }
+  setProgress(3);
+  const id = setInterval(() => {
+    setProgress((p) => {
+      // تقدم بطيء وثابت تقريبًا، ما يوصل فوق 85 قبل ما يخلّص السيرفر
+      if (p >= 85) return p;
+      return Math.min(85, p + 1.2);
+    });
+  }, 1200); // كل 1.2 ثانية يزيد شوي
+  return () => clearInterval(id);
+}, [isGenerating]);
 
   return (
     <>
@@ -155,6 +173,36 @@ export const ProjectTerminal = ({
           )}
         </div>
       )}
+      {isGenerating && (
+  <div
+    className="px-4 py-3"
+    style={{
+      backgroundColor: "var(--glass-bg)",
+      borderBottom: "1px solid var(--glass-border)",
+    }}
+  >
+    <div className="d-flex justify-content-between align-items-center mb-2">
+      <small className="fw-bold text-theme">
+        {t("project_terminal.progress_label", "Generating G-Code...")}
+      </small>
+      <small className="text-theme-muted">{Math.round(progress)}%</small>
+    </div>
+<ProgressBar
+  now={progress}
+  animated
+  striped
+  variant="success"
+  className="gcode-progress"
+  style={{ height: 10, borderRadius: 8 }}
+/>
+    <small className="text-theme-muted d-block mt-2">
+      {t(
+        "project_terminal.progress_hint",
+        "This can take a minute for detailed designs. You can stay on this page.",
+      )}
+    </small>
+  </div>
+)}
 
       <Card.Body
         className="p-0 flex-grow-1 position-relative"

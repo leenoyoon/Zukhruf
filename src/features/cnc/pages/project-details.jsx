@@ -13,7 +13,8 @@ import { motion } from "framer-motion";
 import { FiArrowLeft, FiArrowRight, FiTrash2 } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { useProjectDetails } from "../hooks/useProjectDetails";
-
+import { useState } from "react";
+import { ConfirmDeleteModal } from "../../../shared/components/ConfirmDeleteModal";
 import { ProjectOverview } from "../components/ProjectOverview";
 import { ProjectEditForm } from "../components/ProjectEditForm";
 import { ProjectTerminal } from "../components/ProjectTerminal";
@@ -36,6 +37,19 @@ const ProjectDetailsPage = () => {
     handleDeleteProject,
     handleGenerateGCode,
   } = useProjectDetails(id);
+  const [showDelete, setShowDelete] = useState(false);
+const [deleting, setDeleting] = useState(false);
+
+const askDelete = () => setShowDelete(true);
+
+const confirmDelete = async () => {
+  setDeleting(true);
+  try {
+    await handleDeleteProject();
+  } finally {
+    setDeleting(false);
+  }
+};
 
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 20 },
@@ -89,11 +103,7 @@ const ProjectDetailsPage = () => {
 
         <Button
           variant="link"
-          onClick={() => {
-            if (window.confirm(t("project_details.confirm_delete"))) {
-              handleDeleteProject();
-            }
-          }}
+   onClick={askDelete}
           className="text-danger text-decoration-none p-0 d-flex align-items-center gap-2 fw-bold opacity-75 hover-opacity-100"
         >
           <FiTrash2 size={20} /> {t("project_details.delete_project")}
@@ -136,6 +146,12 @@ const ProjectDetailsPage = () => {
           />
         </Col>
       </Row>
+      <ConfirmDeleteModal
+  show={showDelete}
+  isLoading={deleting}
+  onConfirm={confirmDelete}
+  onCancel={() => !deleting && setShowDelete(false)}
+/>
     </Container>
   );
 };

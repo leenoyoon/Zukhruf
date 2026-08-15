@@ -43,22 +43,14 @@ export const useProjects = () => {
     fetchProjects(nextPage, true);
   };
 
-  const handleDelete = async (id) => {
-    if (
-      window.confirm(
-        "Are you sure you want to permanently delete this project?",
-      )
-    ) {
-      try {
-        await projectService.deleteProject(id);
-        setProjects((prevProjects) =>
-          prevProjects.filter((proj) => proj.id !== id),
-        );
-      } catch {
-        alert("Failed to delete project from server.");
-      }
-    }
-  };
+const handleDelete = async (id) => {
+  try {
+    await projectService.deleteProject(id);
+    setProjects((prev) => prev.filter((proj) => proj.id !== id));
+  } catch {
+    alert("Failed to delete project from server.");
+  }
+};
 
   return {
     projects,

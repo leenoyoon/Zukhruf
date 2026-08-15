@@ -65,8 +65,8 @@ const CustomNavbar = () => {
 
         <Navbar.Collapse id="main-nav">
           <Nav className="mx-auto gap-4">
-            {["home", "gallery", "projects"].map((key, i) => {
-              const paths = ["/home", "/gallery", "/projects"];
+            {["home", "gallery", "projects", "simulator"].map((key, i) => {
+              const paths = ["/home", "/gallery", "/projects", "/simulator"];
               const isActive = location.pathname === paths[i];
               return (
                 <Nav.Link

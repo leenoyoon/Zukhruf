@@ -133,20 +133,20 @@ export const MachiningReport = ({ project }) => {
             ).toFixed(0)} mm`}
           />
         </Col>
-        <Col xs={6} lg={4}>
+        {/* <Col xs={6} lg={4}>
           <StatTile
             icon={FiCheckSquare}
             label={t("machining_report.paths_processed")}
             value={`${report.paths?.processed ?? "—"} / ${report.paths?.input ?? "—"}`}
           />
-        </Col>
-        <Col xs={6} lg={4}>
+        </Col> */}
+        {/* <Col xs={6} lg={4}>
           <StatTile
             icon={FiGitBranch}
             label={t("machining_report.segments")}
             value={`${report.segments?.linear ?? 0} / ${report.segments?.arc ?? 0}`}
           />
-        </Col>
+        </Col> */}
         <Col xs={6} lg={4}>
           <StatTile
             icon={FiHash}
@@ -161,7 +161,7 @@ export const MachiningReport = ({ project }) => {
             value={`${fileSize.size_kb?.toFixed?.(1) ?? "—"} KB`}
           />
         </Col>
-        {bbox && (
+        {/* {bbox && (
           <Col xs={12} lg={8}>
             <StatTile
               icon={FiBox}
@@ -169,7 +169,7 @@ export const MachiningReport = ({ project }) => {
               value={`${bbox.width_mm} × ${bbox.depth_mm} × ${Math.abs(bbox.height_mm)} mm`}
             />
           </Col>
-        )}
+        )} */}
         <Col xs={6} lg={4}>
           <StatTile
             icon={FiFileText}
