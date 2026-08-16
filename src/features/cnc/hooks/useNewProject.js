@@ -177,18 +177,33 @@ export const useNewProject = () => {
     }
   };
 
-  const handleCreateProject = async () => {
-    if (!uploadedImageId) return;
-    if (
-      !isValidWoodDimension(dimensions.x) ||
-      !isValidWoodDimension(dimensions.y)
-    ) {
-      return;
-    }
+const handleCreateProject = async () => {
+  if (!uploadedImageId) return;
+  if (
+    !isValidWoodDimension(dimensions.x) ||
+    !isValidWoodDimension(dimensions.y)
+  ) {
+    return;
+  }
 
-    const coverage = aiData?.processing_info?.coverage;
+  // 1) فحص التغطية دائماً قبل الإنشاء
+  setIsCheckingCoverage(true);
+  try {
+    const formData = new FormData();
+    if (file) formData.append("image", file);
+    formData.append("image_id", uploadedImageId);
+    formData.append("x", dimensions.x);
+    formData.append("y", dimensions.y);
+    formData.append("tool_dia_mm", toolDiaMm);
+    formData.append("step_over_ratio", stepOverRatio);
 
-    // إذا التغطية غير كافية وفيه أداة مقترحة → اسأل المستخدم
+    const response = await imageService.checkCoverage(formData);
+    const data = response.data || response;
+    setAiData(data);
+
+    const coverage = data?.processing_info?.coverage;
+
+    // 2) إذا التغطية ضعيفة وفيه اقتراح → مودال
     if (
       coverage &&
       coverage.coverage_ok === false &&
@@ -199,9 +214,16 @@ export const useNewProject = () => {
       return;
     }
 
-    // وإلا أنشئ مباشرة
+    // 3) تغطية كافية → أنشئ مباشرة
     await submitProject(buildCuttingSettings());
-  };
+  } catch (err) {
+    console.error("Coverage check before create failed:", err);
+    // اختياري: أنشئ رغم الفشل، أو أوقفي وأظهري خطأ
+    // await submitProject(buildCuttingSettings());
+  } finally {
+    setIsCheckingCoverage(false);
+  }
+};
 
   const handleAcceptSuggestedTool = async () => {
     const suggested = coverageInfo?.suggested_tool_mm;
