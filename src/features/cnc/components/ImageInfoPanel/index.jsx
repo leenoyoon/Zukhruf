@@ -37,18 +37,20 @@ export const ImageInfoPanel = ({
   // pre-filled and skipped. That way the user can adjust Width/Height/Safe
   // Height, pick a tool diameter, and run "Preview AI Processing" BEFORE
   // the project is actually created.
-  const handleStartCncProject = () => {
-    navigate("/new-project", {
-      state: {
-        existingImage: {
-          id: imageDetails.id,
-          title: imageDetails.title,
-          description: imageDetails.description,
-          is_pattern: imageDetails.is_pattern,
-image_url: imageDetails.image_file || imageDetails.image_url,        },
+const handleStartCncProject = () => {
+  navigate("/new-project", {
+    state: {
+      existingImage: {
+        id: imageDetails.id,
+        title: imageDetails.title,
+        description: imageDetails.description,
+        is_pattern: imageDetails.is_pattern,
+        image_file: imageDetails.image_file,
+        image_url: imageDetails.image_url,
       },
-    });
-  };
+    },
+  });
+};
 
   return (
     <Col

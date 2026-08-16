@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { imageService } from "../services/imageService";
 import { projectService } from "../services/projectService";
 import { isValidWoodDimension } from "../../../shared/utils/woodDimensions";
-
+import { pickMediaUrl } from "../../../shared/mediaUrl";
 export const useNewProject = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
@@ -58,7 +58,7 @@ export const useNewProject = () => {
     setImageDetails({ title: "", description: "", is_pattern: false });
   };
 
-  const initFromExistingImage = async (existingImage) => {
+ const initFromExistingImage = async (existingImage) => {
     setImageDetails({
       title: existingImage.title || "",
       description: existingImage.description || "",
@@ -67,23 +67,33 @@ export const useNewProject = () => {
     setUploadedImageId(existingImage.id);
 
     try {
-      const imgSrc = existingImage.image_file || existingImage.image_url;
+      const imgSrc = pickMediaUrl(
+        existingImage.image_file,
+        existingImage.image_url,
+      );
+      if (!imgSrc) {
+        console.error("No usable image URL on existingImage", existingImage);
+        return;
+      }
+
       const res = await fetch(imgSrc);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch image: ${res.status}`);
+      }
       const blob = await res.blob();
 
-const urlPath = imgSrc.split(/[?#]/)[0];
+      const urlPath = imgSrc.split(/[?#]/)[0];
       const extMatch = urlPath.match(/\.([a-zA-Z0-9]+)$/);
       const extension = extMatch ? extMatch[1].toLowerCase() : "png";
-      const baseName = (existingImage.title || "image").replace(
-        /\.[^/.]+$/,
-        "",
-      );
+      const baseName = (existingImage.title || "image").replace(/\.[^/.]+$/, "");
       const filename = `${baseName}.${extension}`;
 
       const existingFile = new File([blob], filename, {
         type: blob.type || `image/${extension}`,
       });
-      Object.assign(existingFile, { preview: imgSrc });
+      Object.assign(existingFile, {
+        preview: URL.createObjectURL(blob),
+      });
       setFile(existingFile);
     } catch (err) {
       console.error(
