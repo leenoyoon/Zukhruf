@@ -32,7 +32,7 @@ const CustomNavbar = () => {
         console.error(err);
       } finally {
         logout();
-        navigate("/login");
+        navigate("/");
       }
     }
   };
