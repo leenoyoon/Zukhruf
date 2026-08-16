@@ -77,7 +77,7 @@ export const PatternsSection = ({
                 >
                   <div className="pattern-img-container">
                     <Card.Img
-                      src={item.image_url}
+src={item.image_file || item.image_url}
                       className="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
                     />
                     {item.is_pattern && (
