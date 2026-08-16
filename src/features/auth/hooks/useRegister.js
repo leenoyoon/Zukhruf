@@ -40,24 +40,24 @@ const handleRegister = async (e) => {
       navigate("/login");
     }
   } catch (err) {
-    const data = err.response?.data;
-    const errors = data?.errors;
+  const data = err.response?.data;
+  const errors = data?.errors;
 
-    if (errors && typeof errors === "object") {
-      // اعرض أول رسالة من كل حقل
-      Object.values(errors).forEach((msgs) => {
-        const list = Array.isArray(msgs) ? msgs : [msgs];
-        list.forEach((msg) => toast.error(String(msg)));
+  if (errors && typeof errors === "object") {
+    Object.values(errors).forEach((msgs) => {
+      const list = Array.isArray(msgs) ? msgs : [msgs];
+      list.forEach((msg) => {
+        if (msg) toast.error(String(msg));
       });
-    } else {
-      toast.error(data?.message || "Registration failed");
-    }
-
-    console.error("Registration failed", err);
-  } finally {
-    setLoading(false);
+    });
+  } else if (data?.message) {
+    toast.error(data.message);
+  } else {
+    toast.error("Registration failed");
   }
-};
+
+  console.error("Registration failed", err);
+}
   return {
     formData,
     loading,
