@@ -87,7 +87,7 @@ const confirmDelete = async () => {
 
       <Row className="g-5 align-items-center">
         <ImageDisplay
-          imageUrl={imageDetails.image_url}
+imageUrl={imageDetails.image_file || imageDetails.image_url}
           title={imageDetails.title}
           slideLeftVariant={slideLeftVariant}
         />
