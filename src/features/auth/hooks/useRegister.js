@@ -39,25 +39,27 @@ const handleRegister = async (e) => {
       );
       navigate("/login");
     }
-  } catch (err) {
+} catch (err) {
   const data = err.response?.data;
   const errors = data?.errors;
 
   if (errors && typeof errors === "object") {
-    Object.values(errors).forEach((msgs) => {
-      const list = Array.isArray(msgs) ? msgs : [msgs];
-      list.forEach((msg) => {
-        if (msg) toast.error(String(msg));
-      });
-    });
-  } else if (data?.message) {
-    toast.error(data.message);
+    // أول رسالة خطأ من السيرفر فقط
+    const first = Object.values(errors)
+      .flatMap((msgs) => (Array.isArray(msgs) ? msgs : [msgs]))
+      .find(Boolean);
+
+    if (first) {
+      toast.error(String(first));
+    } else {
+      toast.error(data?.message || "Registration failed");
+    }
   } else {
-    toast.error("Registration failed");
+    toast.error(data?.message || "Registration failed");
   }
 
   console.error("Registration failed", err);
-}
+}}
   return {
     formData,
     loading,
