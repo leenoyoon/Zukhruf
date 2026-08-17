@@ -17,7 +17,7 @@ import {
   isValidWoodDimension,
 } from "../../../../shared/utils/woodDimensions";
 import "./style.css";
-
+import { toast } from "react-toastify";
 export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
   const { t } = useTranslation(); 
   
@@ -59,10 +59,21 @@ export const NewProjectSidebar = ({ hookData, fadeUpVariant }) => {
     setMachineHourlyRate,
   } = hookData;
 
+const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // 15 MB
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { "image/*": [".jpeg", ".jpg", ".png", ".svg"] },
     multiple: false,
+    maxSize: MAX_IMAGE_BYTES,
+    onDropRejected: (fileRejections) => {
+      const isTooLarge = fileRejections.some((r) =>
+        r.errors?.some((e) => e.code === "file-too-large"),
+      );
+      if (isTooLarge) {
+        toast.error(t("new_project_sidebar.file_too_large"));
+      }
+    },
   });
 
   // Wood width (X) / height (Y) must each be at least MIN_WOOD_DIMENSION_MM.

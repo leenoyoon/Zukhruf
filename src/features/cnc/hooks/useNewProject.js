@@ -4,6 +4,8 @@ import { imageService } from "../services/imageService";
 import { projectService } from "../services/projectService";
 import { isValidWoodDimension } from "../../../shared/utils/woodDimensions";
 import { pickMediaUrl } from "../../../shared/mediaUrl";
+import { toast } from "react-toastify";
+import  { useTranslation } from "react-i18next";
 export const useNewProject = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
@@ -35,21 +37,28 @@ export const useNewProject = () => {
   const [showCoverageModal, setShowCoverageModal] = useState(false);
   const [isCheckingCoverage, setIsCheckingCoverage] = useState(false);
 
+  const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // 15 MB
+  const { t } = useTranslation();
   const onDrop = useCallback((acceptedFiles) => {
     const uploadedFile = acceptedFiles[0];
-    if (uploadedFile) {
-      setFile(
-        Object.assign(uploadedFile, {
-          preview: URL.createObjectURL(uploadedFile),
-        }),
-      );
-      setImageDetails((prev) => ({
-        ...prev,
-        title: uploadedFile.name.split(".")[0],
-      }));
-      setAiData(null);
+    if (!uploadedFile) return;
+
+    if (uploadedFile.size > MAX_IMAGE_BYTES) {
+      toast.error(t("new_project_sidebar.file_too_large"));
+      return;
     }
-  }, []);
+
+    setFile(
+      Object.assign(uploadedFile, {
+        preview: URL.createObjectURL(uploadedFile),
+      }),
+    );
+    setImageDetails((prev) => ({
+      ...prev,
+      title: uploadedFile.name.split(".")[0],
+    }));
+    setAiData(null);
+  }, [t]); // مهم: ضيف t لل dependency array
 
   const resetFile = () => {
     setFile(null);
