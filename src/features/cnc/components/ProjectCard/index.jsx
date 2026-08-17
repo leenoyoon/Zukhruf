@@ -118,25 +118,37 @@ export const ProjectCard = ({ project, fadeUpVariant, onDelete }) => {
                 </Button>
               </OverlayTrigger>
 
-              <Button
-                disabled={!gcodeUrl}
-                href={gcodeUrl || "#"}
-                target="_blank"
-                download
-                className="flex-grow-1 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2"
-                style={{
-                  background: gcodeUrl
-                    ? "linear-gradient(135deg, #F47521 0%, #FF914D 100%)"
-                    : "var(--bg-deep)",
-                  color: gcodeUrl ? "white" : "var(--text-muted-custom)",
-                  boxShadow: gcodeUrl
-                    ? "0 5px 15px rgba(244, 117, 33, 0.3)"
-                    : "none",
-                }}
-              >
-                <FiDownload size={18} />
-                {gcodeUrl ? t("projects.get_nc") : t("projects.pending")}
-              </Button>
+<Button
+  disabled={project.status !== "completed" || !gcodeUrl}
+  href={gcodeUrl && project.status === "completed" ? gcodeUrl : undefined}
+  target="_blank"
+  download={project.status === "completed" && gcodeUrl ? true : undefined}
+  className="flex-grow-1 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2"
+  style={{
+    background:
+      project.status === "completed" && gcodeUrl
+        ? "linear-gradient(135deg, #F47521 0%, #FF914D 100%)"
+        : "var(--bg-deep)",
+    color:
+      project.status === "completed" && gcodeUrl
+        ? "white"
+        : "var(--text-muted-custom)",
+    boxShadow:
+      project.status === "completed" && gcodeUrl
+        ? "0 5px 15px rgba(244, 117, 33, 0.3)"
+        : "none",
+    border: "none",
+    cursor:
+      project.status === "completed" && gcodeUrl ? "pointer" : "default",
+  }}
+>
+  <FiDownload size={18} />
+  {project.status === "completed" && gcodeUrl
+    ? t("projects.get_nc")
+    : project.status === "failed"
+      ? t("projects.status_failed") || "Failed"
+      : t("projects.pending")}
+</Button>
 
               <OverlayTrigger
                 placement="top"
