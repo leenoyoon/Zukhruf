@@ -87,3 +87,40 @@
   display: flex;
   align-items: center;
 }
+.report-mrr-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.report-tech-section {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.report-tech-toggle {
+  color: var(--text-muted-custom) !important;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+}
+
+.report-tech-toggle:hover {
+  color: var(--primary-orange) !important;
+}
+
+.report-warnings {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+}
+
+.report-warnings-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ef4444;
+  margin-bottom: 0.35rem;
+}
