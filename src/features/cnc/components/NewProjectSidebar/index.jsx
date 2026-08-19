@@ -123,6 +123,7 @@ const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // 15 MB
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
               {...getRootProps()}
+              data-tour="np-upload"
               className={`p-5 rounded-4 text-center cursor-pointer transition-all ${isDragActive ? "border-primary" : "border-secondary"}`}
               style={{
                 backgroundColor: isDragActive
@@ -183,7 +184,7 @@ const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // 15 MB
         </AnimatePresence>
 
         <Card className="modern-card border-0">
-          <Card.Body className="p-4">
+          <Card.Body className="p-4" >
             <div className="d-flex align-items-center gap-2 mb-4">
               <FiSettings size={22} className="text-primary" />
               <h5 className="fw-bold text-theme mb-0">{t("new_project_sidebar.step1_title")}</h5>
@@ -261,7 +262,7 @@ const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // 15 MB
             pointerEvents: uploadedImageId ? "auto" : "none",
           }}
         >
-          <Card.Body className="p-4">
+          <Card.Body className="p-4" data-tour="np-settings">
             <div className="d-flex align-items-center gap-2 mb-4">
               <FiCpu size={22} className="text-success" />
               <h5 className="fw-bold text-theme mb-0">{t("new_project_sidebar.step2_title")}</h5>
@@ -474,6 +475,7 @@ const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // 15 MB
               </Button>
 
               <Button
+              data-tour="np-create"
                 disabled={
                   isCreatingProject ||
                   isCheckingCoverage ||

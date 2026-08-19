@@ -54,11 +54,12 @@ export const PatternsSection = ({
           </p>
         </div>
         <Button
-          className="pattern-view-all px-4 py-2 bg-transparent border-0"
-          onClick={() => navigate("/patterns")}
-        >
-          {t("home.btn_view_all", "View All Patterns")} {arrowIcon}
-        </Button>
+  data-tour="home-view-all"
+  className="pattern-view-all px-4 py-2 bg-transparent border-0"
+  onClick={() => navigate("/patterns")}
+>
+  {t("home.btn_view_all", "View All Patterns")} {arrowIcon}
+</Button>
       </motion.div>
 
       <motion.div
@@ -68,13 +69,14 @@ export const PatternsSection = ({
         variants={staggerContainer}
       >
         <Row className="g-4">
-          {patterns.map((item) => (
+          {patterns.map((item,idx) => (
             <Col key={item.id} xs={12} sm={6} lg={3}>
               <motion.div variants={fadeUpVariant} className="h-100">
-                <Card
-                  className="modern-card h-100 cursor-pointer d-flex flex-column"
-                  onClick={() => navigate(`/gallery/${item.id}`)}
-                >
+              <Card
+  data-tour={idx === 0 ? "home-pattern-card" : undefined}
+  className="modern-card h-100 cursor-pointer d-flex flex-column"
+  onClick={() => navigate(`/gallery/${item.id}`)}
+>
                   <div className="pattern-img-container">
                     <Card.Img
 src={item.image_file || item.image_url}

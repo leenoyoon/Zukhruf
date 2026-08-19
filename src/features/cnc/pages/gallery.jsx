@@ -73,6 +73,7 @@ const confirmDelete = async () => {
           <p className="text-theme-muted mb-0">{t("gallery.subtitle")}</p>
         </div>
         <Button
+        data-tour="gallery-upload"
           onClick={() => navigate("/new-project")}
           className="btn-primary-custom d-flex align-items-center justify-content-center gap-2"
         >
@@ -89,12 +90,14 @@ const confirmDelete = async () => {
       >
         <ButtonGroup>
           <Button
+          data-tour="gallery-filter-all"
             onClick={() => setFilter("all")}
             className={`fw-bold rounded-3 px-4 py-2 d-flex align-items-center gap-2 ${filter === "all" ? "btn-primary-custom m-1" : "text-theme-muted text-decoration-none bg-transparent border-0"}`}
           >
             <FiImage /> {t("gallery.filter_all")}
           </Button>
           <Button
+          data-tour="gallery-filter-patterns"
             onClick={() => setFilter("patterns")}
             className={`fw-bold rounded-3 px-4 py-2 d-flex align-items-center gap-2 ${filter === "patterns" ? "btn-primary-custom m-1" : "text-theme-muted text-decoration-none bg-transparent border-0"}`}
           >
@@ -137,14 +140,15 @@ const confirmDelete = async () => {
         <>
           <Row className="g-4">
             <AnimatePresence>
-              {images.map((img) => (
-                <GalleryCard
-                  key={img.id}
-                  img={img}
-                  fadeUpVariant={fadeUpVariant}
-                  onDelete={(id) => askDelete(id)}
-                />
-              ))}
+              {images.map((img, idx) => (
+  <GalleryCard
+    key={img.id}
+    img={img}
+    fadeUpVariant={fadeUpVariant}
+    onDelete={(id) => askDelete(id)}
+    isTourTarget={idx === 0}
+  />
+))}
             </AnimatePresence>
           </Row>
 

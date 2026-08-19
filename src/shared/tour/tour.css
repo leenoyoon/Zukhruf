@@ -1,0 +1,102 @@
+/* Zukhruf Tour — lighter overlay, theme-friendly */
+
+.driver-popover.zukhruf-tour {
+  background-color: var(--bg-surface, #1e2228) !important;
+  color: var(--text-main, #f0f0f0) !important;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1)) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
+  max-width: 340px !important;
+  padding: 18px 20px !important;
+  font-family: "Cairo", sans-serif !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-title {
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  color: var(--text-main, #f0f0f0) !important;
+  margin-bottom: 6px !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-description {
+  font-size: 0.92rem !important;
+  color: var(--text-muted-custom, #a0a5ae) !important;
+  line-height: 1.55 !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-progress-text {
+  color: var(--text-muted-custom, #a0a5ae) !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-navigation-btns {
+  gap: 8px !important;
+  margin-top: 14px !important;
+}
+
+.driver-popover.zukhruf-tour button {
+  text-shadow: none !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  padding: 8px 16px !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-next-btn {
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8a00 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35) !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-prev-btn {
+  background: transparent !important;
+  color: var(--text-muted-custom, #a0a5ae) !important;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.15)) !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-close-btn {
+  color: var(--text-muted-custom, #a0a5ae) !important;
+  background: transparent !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-arrow-side-left,
+.driver-popover.zukhruf-tour .driver-popover-arrow-side-right,
+.driver-popover.zukhruf-tour .driver-popover-arrow-side-top,
+.driver-popover.zukhruf-tour .driver-popover-arrow-side-bottom {
+  border-color: var(--bg-surface, #1e2228) !important;
+}
+
+/* Highlight */
+.driver-active-element {
+  outline: 3px solid #ff6b00 !important;
+  outline-offset: 4px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 0 6px rgba(255, 107, 0, 0.25) !important;
+}
+
+/* Lighter overlay */
+.driver-overlay {
+  background: rgba(0, 0, 0, 0.45) !important;
+}
+
+/* RTL */
+[dir="rtl"] .driver-popover.zukhruf-tour {
+  text-align: right;
+}
+
+[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-navigation-btns {
+  flex-direction: row-reverse;
+}
+
+.tour-help-btn {
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.tour-help-btn:hover {
+  opacity: 1;
+  color: #ff6b00 !important;
+}

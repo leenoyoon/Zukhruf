@@ -107,6 +107,7 @@ export const GcodeUploadCard = ({ upload, fadeUpVariant, onDelete }) => {
   size="sm"
   className="btn-primary-custom flex-grow-1 d-flex align-items-center justify-content-center gap-1"
   onClick={() => navigate(`/simulator/${upload.id}`)}
+  data-tour="sim-card-details"
 >
   <FiEye size={16} />
   <span className="d-none d-sm-inline">
@@ -121,6 +122,7 @@ export const GcodeUploadCard = ({ upload, fadeUpVariant, onDelete }) => {
       variant="light"
       size="sm"
       className="gcode-action-btn gcode-btn-download"
+      data-tour="sim-card-download"
       href={fileUrl}
       target="_blank"
       rel="noreferrer"
@@ -136,6 +138,7 @@ export const GcodeUploadCard = ({ upload, fadeUpVariant, onDelete }) => {
     variant="light"
     size="sm"
     className="gcode-action-btn gcode-btn-delete"
+    data-tour="sim-card-delete"
     onClick={() => onDelete?.(upload.id)}
   >
     <FiTrash2 size={16} />

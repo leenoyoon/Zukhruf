@@ -103,6 +103,7 @@ const handleStartCncProject = () => {
 
             <div className="d-flex flex-column gap-3">
               <Button
+              data-tour="gd-start"
                 onClick={handleStartCncProject}
                 className="btn-primary-custom py-3 d-flex justify-content-center align-items-center gap-2 fs-5"
               >
@@ -112,6 +113,7 @@ const handleStartCncProject = () => {
 
               <Button
                 variant="outline-danger"
+                data-tour="gd-delete"
                 onClick={handleDelete}
                 className="py-3 rounded-3 fw-bold d-flex justify-content-center align-items-center gap-2"
                 style={{ borderWidth: "2px" }}

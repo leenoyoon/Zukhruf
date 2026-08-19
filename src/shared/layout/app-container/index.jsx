@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../navbar";
 import Footer from "../footer";
 import { motion, AnimatePresence } from "framer-motion";
+import { AppTour } from "../../../shared/tour";
 
 const AppContainer = () => {
   return (
@@ -11,6 +12,8 @@ const AppContainer = () => {
       <div className="bg-mesh" />
 
       <Navbar />
+            <AppTour />
+
 
       <Container
         fluid="lg"

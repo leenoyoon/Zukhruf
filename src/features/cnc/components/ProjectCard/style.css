@@ -1,0 +1,51 @@
+/* View button */
+.project-card-btn-view {
+  background-color: var(--bg-deep) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--glass-border) !important;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    transform 0.15s ease;
+}
+.project-card-btn-view:hover {
+  background-color: rgba(244, 117, 33, 0.12) !important;
+  color: #f47521 !important;
+  border-color: rgba(244, 117, 33, 0.45) !important;
+  transform: translateY(-1px);
+}
+
+/* Download button (enabled) */
+.project-card-btn-download {
+  background: linear-gradient(135deg, #f47521 0%, #ff914d 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 5px 15px rgba(244, 117, 33, 0.3);
+  transition: filter 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+.project-card-btn-download:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 8px 20px rgba(244, 117, 33, 0.45);
+  transform: translateY(-1px);
+  color: #fff !important;
+}
+
+/* Download disabled / pending */
+.project-card-btn-download-disabled {
+  background: var(--bg-deep) !important;
+  color: var(--text-muted-custom) !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: default !important;
+}
+
+/* Delete button */
+.project-card-btn-delete {
+  background-color: rgba(255, 0, 0, 0.1) !important;
+  color: #ff4d4d !important;
+  border: none !important;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+.project-card-btn-delete:hover {
+  background-color: rgba(255, 0, 0, 0.22) !important;
+  color: #ff1a1a !important;
+  transform: translateY(-1px);
+}

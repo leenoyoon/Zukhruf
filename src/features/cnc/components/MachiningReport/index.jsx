@@ -96,7 +96,7 @@ export const MachiningReport = ({ project }) => {
         : `${cuttingLengthMm.toFixed(0)} mm`;
 
   return (
-    <div className="p-4 overflow-auto h-100">
+    <div className="p-4 overflow-auto h-100" data-tour="pd-report">
       <div className="mb-4">
         <h6 className="fw-bold text-theme mb-1">
           {t("machining_report.title")}

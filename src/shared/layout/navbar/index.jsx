@@ -16,7 +16,7 @@ import "./style.css";
 import { useTranslation } from "react-i18next";
 import { FiGlobe } from "react-icons/fi";
 import { useAuth } from "../../../features/auth/context/AuthContext";
-
+import { FiHelpCircle } from "react-icons/fi";
 const CustomNavbar = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -46,6 +46,7 @@ const CustomNavbar = () => {
         <Navbar.Brand
           onClick={() => navigate("/")}
           className="d-flex align-items-center gap-2 cursor-pointer"
+          data-tour="nav-brand"
         >
           <div
             className="p-2 rounded-circle d-flex align-items-center justify-content-center"
@@ -64,7 +65,7 @@ const CustomNavbar = () => {
         <Navbar.Toggle className="border-0 bg-transparent" />
 
         <Navbar.Collapse id="main-nav">
-          <Nav className="mx-auto gap-4">
+          <Nav className="mx-auto gap-4" data-tour="nav-links">
             {["home", "gallery", "projects", "simulator"].map((key, i) => {
               const paths = ["/home", "/gallery", "/projects", "/simulator"];
               const isActive = location.pathname === paths[i];
@@ -89,6 +90,7 @@ const CustomNavbar = () => {
               onClick={toggleLanguage}
               className="hover-icon hover-orange fw-bold d-flex align-items-center gap-1 cursor-pointer"
               title="Change Language"
+              data-tour="nav-lang"
             >
               <FiGlobe size={20} />
               <span className="small">
@@ -100,16 +102,28 @@ const CustomNavbar = () => {
               onClick={toggleTheme}
               className="hover-icon hover-orange cursor-pointer"
               title="Toggle Theme"
+              data-tour="nav-theme"
             >
               {mode === "dark" ? <FiSun size={20} /> : <FiMoon size={20} />}
             </div>
-
+            <div
+  onClick={() => {
+    if (typeof window.startZukhrufTour === "function") {
+      window.startZukhrufTour();
+    }
+  }}
+  className="hover-icon hover-orange cursor-pointer tour-help-btn"
+  title={t("tour.restart", "Show guide")}
+>
+  <FiHelpCircle size={20} />
+</div>
             {isLoggedIn ? (
               <>
                 <div
                   onClick={() => navigate("/settings")}
                   className="hover-icon hover-orange"
                   title="Settings"
+                  data-tour="nav-settings"
                 >
                   <FiSettings size={20} />
                 </div>
@@ -136,7 +150,7 @@ const CustomNavbar = () => {
                 </div>
               </>
             ) : (
-              <Stack direction="horizontal" gap={2} className="ms-lg-3">
+              <Stack direction="horizontal" gap={2} className="ms-lg-3" data-tour="nav-auth">
                 <Button
                   variant="link"
                   onClick={() => navigate("/login")}

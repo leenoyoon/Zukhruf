@@ -33,6 +33,7 @@ export const CtaSection = ({ fadeUpVariant }) => {
               )}
             </p>
             <Button
+            data-tour="home-cta"
               onClick={() => navigate("/new-project")}
               className="btn-primary-custom px-5 py-3 h4 mb-0 fw-bold rounded-pill"
               style={{ boxShadow: "0 10px 30px rgba(255, 107, 0, 0.3)" }}

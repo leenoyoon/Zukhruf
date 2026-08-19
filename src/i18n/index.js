@@ -387,6 +387,140 @@ warn_generic: "{{count}} warning(s) were reported during generation.",
         open_new_tab: "Open in new tab",
         no_simulation: "No simulation available for this upload.",
       },
+      tour: {
+  next: "Next",
+  prev: "Back",
+  done: "Finish",
+  close: "Skip",
+  restart: "Show guide",
+  brand_title: "Welcome to Zukhruf",
+  brand_desc:
+    "Your smart CNC platform — convert designs into precise machine-ready toolpaths in a few clicks.",
+  nav_title: "Main navigation",
+  nav_desc:
+    "Move between Home, Gallery, your Projects, and the G-Code Simulator from here.",
+  lang_title: "Language",
+  lang_desc: "Switch between Arabic and English anytime.",
+  theme_title: "Theme",
+  theme_desc: "Toggle dark or light mode to match your preference.",
+  auth_title: "Sign in or create an account",
+  auth_desc:
+    "Log in or register to create projects, generate G-code, and save your work.",
+  settings_title: "Settings & profile",
+  settings_desc: "Manage your account, password, and preferences.",
+  new_project_nav_title: "Projects",
+  new_project_nav_desc:
+    "Open Projects then start a new project to turn an image into CNC toolpaths.",
+  np_upload_title: "Upload your design",
+  np_upload_desc:
+    "Drag & drop an image (JPG, PNG, SVG) or browse to start. This is Step 1 of creating a project.",
+  np_settings_title: "CNC setup",
+  np_settings_desc:
+    "Set wood dimensions, tool diameter, feed rates, and other machining parameters.",
+  np_preview_title: "Live AI preview",
+  np_preview_desc:
+    "See analysis stages, coverage, and toolpath preview before you commit.",
+  np_create_title: "Create the project",
+  np_create_desc:
+    "When settings look good, create the project. The system will process and prepare G-code.",
+  np_download_title: "Download G-Code",
+  np_download_desc:
+    "After processing, download the .nc / G-code file ready for your CNC machine.",
+  pd_report_title: "Machining report",
+  pd_report_desc:
+    "View estimated time, cost, coverage, and technical stats for the toolpath.",
+  sim_nav_title: "G-Code Simulator",
+  sim_nav_desc:
+    "Upload existing G-code files and inspect their 3D toolpaths without creating a full project.",
+sim_viewer_title: "3D simulation viewer",
+  sim_viewer_desc:
+    "Inspect the toolpath in 3D, open it in a new tab, and verify the motion before machining.",
+  done_title: "You're ready!",
+  done_desc:
+    "You can restart this guide anytime from the help icon in the navbar. Happy machining!",
+    "pd_edit_title": "Edit project settings",
+"pd_edit_desc": "Change the project title, wood dimensions, and cut depth, then save.",
+"pd_generate_title": "Generate / re-generate G-Code",
+"pd_generate_desc": "Run processing to produce toolpaths from the project image.",
+"pd_download_title": "Download G-Code",
+"pd_download_desc": "After generation finishes, download the file for your CNC machine.",
+"pd_tab_terminal_title": "Terminal tab",
+"pd_tab_terminal_desc": "Shows processing log and the generated G-Code text.",
+"pd_tab_3d_title": "3D Preview tab",
+"pd_tab_3d_desc": "Interactive preview of the toolpaths before machining.",
+"pd_tab_report_title": "Report tab",
+"pd_tab_report_desc": "Summary: cut length, estimated time, cost, and path counts.",
+"home_start_title": "Start Processing",
+"home_start_desc": "Create a new project, upload your ornament image, and generate G-Code.",
+"home_explore_title": "Explore Gallery",
+"home_explore_desc": "Browse public designs and patterns available on the platform.",
+"home_view_all_title": "View All Patterns",
+"home_view_all_desc": "Opens the full list of public patterns.",
+"home_pattern_card_title": "Pattern card",
+"home_pattern_card_desc": "Click any card to open pattern details and use it in a new project.",
+"home_cta_title": "Create your project",
+"home_cta_desc": "Start a new project directly from the home page.",
+gallery_upload_title: "Upload new image",
+gallery_upload_desc: "Add a new ornament image to your gallery and start a CNC project from it.",
+gallery_filter_all_title: "All images",
+gallery_filter_all_desc: "Show every image you uploaded, including patterns and regular designs.",
+gallery_filter_patterns_title: "My patterns",
+gallery_filter_patterns_desc: "Show only images marked as reusable patterns.",
+gallery_card_title: "Image card",
+gallery_card_desc: "Hover a card to see actions: view details, start CNC project, or delete.",
+gallery_card_view_title: "View details",
+gallery_card_view_desc: "Open the full image page with description and project actions.",
+gallery_card_start_title: "Quick start",
+gallery_card_start_desc: "Create a CNC project from this image and open its setup page.",
+gallery_card_delete_title: "Delete image",
+gallery_card_delete_desc: "Remove this image from your gallery permanently.",
+gd_back_title: "Back to gallery",
+gd_back_desc: "Return to your image list.",
+gd_preview_title: "Image preview",
+gd_preview_desc: "This is the selected design that will be converted into toolpaths.",
+gd_start_title: "Start CNC project",
+gd_start_desc: "Continue to project setup: wood size, tool diameter, then generate G-code.",
+gd_delete_title: "Delete image",
+gd_delete_desc: "Delete this image if you no longer need it.",
+projects_new_title: "New project",
+projects_new_desc: "Start a new CNC project from an uploaded image or pattern.",
+projects_view_title: "View project",
+projects_view_desc: "Open project details: status, simulation, report, and G-code.",
+projects_download_title: "Download G-code",
+projects_download_desc: "Download the .nc file when the project status is Completed.",
+projects_delete_title: "Delete project",
+projects_delete_desc: "Permanently remove this project after confirmation.",
+sim_upload_title: "Upload G-Code",
+sim_upload_desc: "Open the form to upload a .nc / .gcode file, set wood size, and start 3D simulation.",
+sim_card_details_title: "Open details",
+sim_card_details_desc: "View file info and the interactive 3D toolpath preview.",
+sim_card_download_title: "Download file",
+sim_card_download_desc: "Download the uploaded G-code file to your device.",
+sim_card_delete_title: "Delete upload",
+sim_card_delete_desc: "Remove this upload and its simulation after confirmation.",
+sim_back_title: "Back to list",
+sim_back_desc: "Return to all uploaded G-code files.",
+sim_preview_title: "3D toolpath preview",
+sim_preview_desc: "Rotate and inspect the simulated toolpath before using the file on the machine.",
+sim_download_title: "Download G-Code",
+sim_download_desc: "Download the G-code file from this detail page.",
+sim_delete_title: "Delete",
+sim_delete_desc: "Permanently delete this upload and its simulation.",
+settings_profile_title: "Your profile",
+settings_profile_desc: "View your username, user ID, and linked email.",
+settings_security_title: "Security",
+settings_security_desc: "Change your password by entering the old password and the new one twice.",
+settings_save_title: "Save changes",
+settings_save_desc: "Apply the new password after filling all security fields.",
+patterns_header_title: "Patterns library",
+patterns_header_desc: "Browse community-shared ornament patterns ready for CNC projects.",
+patterns_card_title: "Pattern card",
+patterns_card_desc: "Each card shows a public pattern with its title and creator.",
+patterns_view_title: "View details",
+patterns_view_desc: "Open the pattern page to inspect it and start a CNC project.",
+patterns_load_more_title: "Load more",
+patterns_load_more_desc: "Fetch additional public patterns when more are available.",
+},
     },
   },
   ar: {
@@ -776,6 +910,229 @@ warn_generic: "ظهر {{count}} تحذيرًا أثناء التوليد.",
         open_new_tab: "فتح في تبويب جديد",
         no_simulation: "لا توجد محاكاة لهذا الملف.",
       },
+tour: {
+  next: "التالي",
+  prev: "السابق",
+  done: "إنهاء",
+  close: "تخطي",
+  restart: "عرض الدليل",
+
+  brand_title: "مرحباً بك في زخرف",
+  brand_desc:
+    "منصتك الذكية للتحكم الرقمي؛ حوّل تصاميمك إلى مسارات تشغيل جاهزة للآلة بدقة وسرعة.",
+
+  nav_title: "القائمة الرئيسة",
+  nav_desc:
+    "انتقل من هنا بين الصفحة الرئيسة، والمعرض، ومشاريعك، ومحاكي ملفات G-Code.",
+
+  lang_title: "اللغة",
+  lang_desc: "بدّل بين العربية والإنجليزية في أي وقت.",
+
+  theme_title: "الوضع الداكن / الفاتح",
+  theme_desc: "غيّر مظهر الواجهة بين الوضع الداكن والوضع الفاتح وفق تفضيلك.",
+
+  auth_title: "تسجيل الدخول أو إنشاء حساب",
+  auth_desc:
+    "سجّل دخولك أو أنشئ حساباً لإنشاء المشاريع، وتوليد ملفات G-Code، وحفظ أعمالك.",
+
+  settings_title: "الإعدادات والملف الشخصي",
+  settings_desc: "أدر حسابك، وكلمة المرور، وتفضيلات الاستخدام.",
+
+  new_project_nav_title: "المشاريع",
+  new_project_nav_desc:
+    "انتقل إلى المشاريع، ثم ابدأ مشروعاً جديداً لتحويل الصورة إلى مسارات تشغيل رقمية.",
+
+  np_upload_title: "رفع التصميم",
+  np_upload_desc:
+    "اسحب صورة بصيغة JPG أو PNG أو SVG، أو اختر ملفاً من جهازك. هذه هي الخطوة الأولى لإنشاء المشروع.",
+
+  np_settings_title: "إعدادات التشغيل الرقمي",
+  np_settings_desc:
+    "حدّد أبعاد قطعة الخشب، وقطر أداة القطع، وسرعات التغذية، وسائر معاملات التشغيل.",
+
+  np_preview_title: "معاينة المعالجة الذكية",
+  np_preview_desc:
+    "اطّلع على مراحل التحليل، ونسبة التغطية، ومعاينة المسار قبل تأكيد إنشاء المشروع.",
+
+  np_create_title: "إنشاء المشروع",
+  np_create_desc:
+    "بعد اكتمال الإعدادات، أنشئ المشروع ليقوم النظام بالمعالجة وتجهيز ملف G-Code.",
+
+  np_download_title: "تحميل ملف G-Code",
+  np_download_desc:
+    "بعد انتهاء المعالجة، حمّل ملف ‎.nc / G-Code الجاهز للاستخدام على آلة التحكم الرقمي.",
+
+  pd_report_title: "تقرير التشغيل",
+  pd_report_desc:
+    "اطّلع على الزمن التقديري، والتكلفة، ونسبة التغطية، والإحصاءات الفنية للمسار.",
+
+  sim_nav_title: "محاكي G-Code",
+  sim_nav_desc:
+    "ارفع ملفات G-Code جاهزة، واستعرض مسارها ثلاثي الأبعاد دون إنشاء مشروع كامل.",
+
+  sim_viewer_title: "عارض المحاكاة ثلاثية الأبعاد",
+  sim_viewer_desc:
+    "افحص المسار بصورة ثلاثية الأبعاد، وافتحه في تبويب جديد، وتأكد من صحة الحركة قبل التشغيل.",
+
+  done_title: "أصبحت جاهزاً",
+  done_desc:
+    "يمكنك إعادة تشغيل الدليل في أي وقت من أيقونة المساعدة في الشريط العلوي. نتمنى لك عملاً موفقاً.",
+
+  pd_edit_title: "تعديل إعدادات المشروع",
+  pd_edit_desc:
+    "من هنا يمكنك تعديل عنوان المشروع، وأبعاد قطعة الخشب، وعمق الحفر، ثم حفظ التغييرات.",
+
+  pd_generate_title: "توليد G-Code أو إعادة توليده",
+  pd_generate_desc:
+    "اضغط زر التوليد لتشغيل المعالجة وإنشاء ملف مسارات التشغيل من جديد.",
+
+  pd_download_title: "تحميل ملف G-Code",
+  pd_download_desc:
+    "بعد اكتمال التوليد، حمّل الملف النهائي لاستخدامه على آلة التحكم الرقمي.",
+
+  pd_tab_terminal_title: "تبويب السجل",
+  pd_tab_terminal_desc:
+    "يعرض سجل المعالجة ونص ملف G-Code الناتج.",
+
+  pd_tab_3d_title: "المعاينة ثلاثية الأبعاد",
+  pd_tab_3d_desc:
+    "معاينة مسارات الحفر بصورة تفاعلية قبل التشغيل على الآلة.",
+
+  pd_tab_report_title: "تقرير التشغيل",
+  pd_tab_report_desc:
+    "ملخص الإحصاءات: طول القطع، والزمن التقديري، والتكلفة، وعدد المسارات.",
+
+  home_start_title: "ابدأ المعالجة",
+  home_start_desc:
+    "اضغط هنا لإنشاء مشروع جديد، ورفع صورة الزخرفة، وتحويلها إلى ملف G-Code.",
+
+  home_explore_title: "استكشف المعرض",
+  home_explore_desc:
+    "تصفّح التصاميم والأنماط العامة المتاحة في المنصة.",
+
+  home_view_all_title: "عرض جميع الأنماط",
+  home_view_all_desc:
+    "يفتح قائمة كاملة بجميع الأنماط العامة.",
+
+  home_pattern_card_title: "بطاقة النمط",
+  home_pattern_card_desc:
+    "اضغط أي بطاقة لفتح تفاصيل النمط واستخدامه في مشروع جديد.",
+
+  home_cta_title: "أنشئ مشروعك الآن",
+  home_cta_desc:
+    "من هنا يمكنك بدء مشروع جديد مباشرة من الصفحة الرئيسة.",
+
+  gallery_upload_title: "رفع صورة جديدة",
+  gallery_upload_desc:
+    "أضف زخرفة جديدة إلى معرضك، وابدأ منها مشروع تشغيل رقمي.",
+
+  gallery_filter_all_title: "جميع الصور",
+  gallery_filter_all_desc:
+    "عرض كل الصور المرفوعة، بما في ذلك الزخارف والصور العادية.",
+
+  gallery_filter_patterns_title: "زخارفي",
+  gallery_filter_patterns_desc:
+    "عرض الصور المحفوظة بوصفها زخارف قابلة لإعادة الاستخدام فقط.",
+
+  gallery_card_title: "بطاقة الصورة",
+  gallery_card_desc:
+    "مرّر فوق البطاقة لعرض الإجراءات: عرض التفاصيل، أو بدء مشروع، أو الحذف.",
+
+  gallery_card_view_title: "عرض التفاصيل",
+  gallery_card_view_desc:
+    "فتح صفحة الصورة الكاملة مع الوصف وإجراءات المشروع.",
+
+  gallery_card_start_title: "بدء سريع",
+  gallery_card_start_desc:
+    "إنشاء مشروع تشغيل رقمي من هذه الصورة والانتقال إلى إعداداته.",
+
+  gallery_card_delete_title: "حذف الصورة",
+  gallery_card_delete_desc:
+    "إزالة هذه الصورة من المعرض نهائياً.",
+
+  gd_back_title: "العودة إلى المعرض",
+  gd_back_desc: "الرجوع إلى قائمة صورك.",
+
+  gd_preview_title: "معاينة الصورة",
+  gd_preview_desc:
+    "هذا هو التصميم الذي سيُحوَّل إلى مسارات حفر.",
+
+  gd_start_title: "بدء مشروع تشغيل رقمي",
+  gd_start_desc:
+    "الانتقال إلى إعداد المشروع: أبعاد الخشب وقطر الأداة، ثم توليد ملف G-Code.",
+
+  gd_delete_title: "حذف الصورة",
+  gd_delete_desc:
+    "احذف هذه الصورة إذا لم تعد بحاجة إليها.",
+
+  projects_new_title: "مشروع جديد",
+  projects_new_desc:
+    "ابدأ مشروعاً جديداً من صورة أو نمط مرفوع مسبقاً.",
+
+  projects_view_title: "عرض المشروع",
+  projects_view_desc:
+    "فتح تفاصيل المشروع: الحالة، والمحاكاة، والتقرير، وملف G-Code.",
+
+  projects_download_title: "تحميل G-Code",
+  projects_download_desc:
+    "تحميل ملف ‎.nc عندما تكون حالة المشروع «مكتمل».",
+
+  projects_delete_title: "حذف المشروع",
+  projects_delete_desc:
+    "حذف المشروع نهائياً بعد التأكيد.",
+
+  sim_upload_title: "رفع ملف G-Code",
+  sim_upload_desc:
+    "افتح النموذج لرفع ملف ‎.nc أو ‎.gcode، وتحديد أبعاد الخشب، ثم بدء المحاكاة ثلاثية الأبعاد.",
+
+  sim_card_details_title: "فتح التفاصيل",
+  sim_card_details_desc:
+    "عرض معلومات الملف والمعاينة التفاعلية لمسار الأداة.",
+
+  sim_card_download_title: "تحميل الملف",
+  sim_card_download_desc:
+    "تحميل ملف G-Code المرفوع إلى جهازك.",
+
+  sim_card_delete_title: "حذف الملف المرفوع",
+  sim_card_delete_desc:
+    "حذف هذا الملف ومحاكاته بعد التأكيد.",
+
+  sim_back_title: "العودة إلى القائمة",
+  sim_back_desc:
+    "الرجوع إلى جميع ملفات G-Code المرفوعة.",
+
+  sim_preview_title: "معاينة مسار الأداة ثلاثية الأبعاد",
+  sim_preview_desc:
+    "تدوير المسار ومعاينته قبل استخدام الملف على الآلة.",
+
+  sim_download_title: "تحميل G-Code",
+  sim_download_desc:
+    "تحميل ملف G-Code من صفحة التفاصيل.",
+
+  sim_delete_title: "حذف",
+  sim_delete_desc:
+    "حذف هذا الملف ومحاكاته نهائياً.",
+
+  settings_profile_title: "ملفك الشخصي",
+  settings_profile_desc:
+    "عرض اسم المستخدم، ومعرّف الحساب، والبريد الإلكتروني المرتبط.",
+
+  settings_security_title: "الأمان",
+  settings_security_desc:
+    "غيّر كلمة المرور بإدخال الكلمة الحالية، ثم الكلمة الجديدة مرتين للتأكيد.",
+
+  settings_save_title: "حفظ التغييرات",
+  settings_save_desc:
+    "تطبيق كلمة المرور الجديدة بعد تعبئة حقول الأمان.",
+},
+patterns_header_title: "مكتبة الأنماط",
+patterns_header_desc: "استعرض أنماط الزخرفة المشتركة من المجتمع والجاهزة لمشاريع التشغيل الرقمي.",
+patterns_card_title: "بطاقة النمط",
+patterns_card_desc: "تعرض كل بطاقة نمطاً عاماً مع عنوانه واسم رافعه.",
+patterns_view_title: "عرض التفاصيل",
+patterns_view_desc: "افتح صفحة النمط لمعاينته وبدء مشروع تشغيل رقمي منه.",
+patterns_load_more_title: "تحميل المزيد",
+patterns_load_more_desc: "جلب المزيد من الأنماط العامة عند توفرها.",
     },
   },
 };

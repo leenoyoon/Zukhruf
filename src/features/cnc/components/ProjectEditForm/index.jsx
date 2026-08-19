@@ -27,7 +27,7 @@ export const ProjectEditForm = ({
   const hasInvalidDimensions = isWidthInvalid || isHeightInvalid;
 
   return (
-    <Card className="modern-card border-0">
+    <Card className="modern-card border-0" data-tour="pd-edit">
       <Card.Body className="p-4">
         <div className="d-flex align-items-center gap-2 mb-4">
           <FiEdit3 size={20} className="text-primary" />

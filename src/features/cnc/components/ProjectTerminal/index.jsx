@@ -80,6 +80,7 @@ React.useEffect(() => {
 
         <div className="d-flex gap-2">
           <Button
+          data-tour="pd-generate"
             onClick={handleGenerateGCode}
             disabled={isGenerating}
             className="btn-primary-custom px-4 py-2 fw-bold d-flex align-items-center gap-2"
@@ -91,6 +92,7 @@ React.useEffect(() => {
           </Button>
 
           <Button
+          data-tour="pd-download"
             href={gcodeUrl || "#"}
             target="_blank"
             download
@@ -121,33 +123,34 @@ React.useEffect(() => {
           }}
         >
           <div className="d-flex gap-2">
-            {[
-              { key: "terminal", icon: FiCode, label: t("project_terminal.tab_terminal") },
-              ...(hasSimulation
-                ? [{ key: "3d", icon: FiBox, label: t("project_terminal.tab_3d") }]
-                : []),
-              ...(hasReport
-                ? [{ key: "report", icon: FiBarChart2, label: t("project_terminal.tab_report") }]
-                : []),
-            ].map(({ key, icon: Icon, label }) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setActiveView(key)}
-                className="d-flex align-items-center gap-2 fw-bold small border-0 bg-transparent px-3 py-2"
-                style={{
-                  cursor: "pointer",
-                  color: activeView === key ? "var(--primary-orange)" : "var(--text-muted)",
-                  borderBottom:
-                    activeView === key
-                      ? "2px solid var(--primary-orange)"
-                      : "2px solid transparent",
-                  marginBottom: "-1px",
-                }}
-              >
-                {Icon && <Icon size={14} />} {label}
-              </button>
-            ))}
+           {[
+  { key: "terminal", icon: FiCode, label: t("project_terminal.tab_terminal"), tour: "pd-tab-terminal" },
+  ...(hasSimulation
+    ? [{ key: "3d", icon: FiBox, label: t("project_terminal.tab_3d"), tour: "pd-tab-3d" }]
+    : []),
+  ...(hasReport
+    ? [{ key: "report", icon: FiBarChart2, label: t("project_terminal.tab_report"), tour: "pd-tab-report" }]
+    : []),
+].map(({ key, icon: Icon, label, tour }) => (
+  <button
+    key={key}
+    type="button"
+    data-tour={tour}
+    onClick={() => setActiveView(key)}
+    className="d-flex align-items-center gap-2 fw-bold small border-0 bg-transparent px-3 py-2"
+    style={{
+      cursor: "pointer",
+      color: activeView === key ? "var(--primary-orange)" : "var(--text-muted)",
+      borderBottom:
+        activeView === key
+          ? "2px solid var(--primary-orange)"
+          : "2px solid transparent",
+      marginBottom: "-1px",
+    }}
+  >
+    {Icon && <Icon size={14} />} {label}
+  </button>
+))}
           </div>
 
           {/* Only relevant once you're actually looking at the 3D view */}

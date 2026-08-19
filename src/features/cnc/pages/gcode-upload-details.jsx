@@ -59,6 +59,7 @@ const GcodeUploadDetailsPage = () => {
           <Button
             className="btn-primary-custom mt-3"
             onClick={() => navigate("/simulator")}
+            data-tour="sim-back"
           >
             {t("simulator.back")}
           </Button>
@@ -96,6 +97,7 @@ const GcodeUploadDetailsPage = () => {
             variant="link"
             className="text-theme text-decoration-none d-flex align-items-center gap-2 p-0"
             onClick={() => navigate("/simulator")}
+            data-tour="sim-back"
           >
             <FiArrowLeft /> {t("simulator.back")}
           </Button>
@@ -106,6 +108,7 @@ const GcodeUploadDetailsPage = () => {
                 variant="light"
                 className="gcode-details-btn gcode-details-btn-download d-flex align-items-center gap-2"
                 href={fileUrl}
+                data-tour="sim-download"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -118,6 +121,7 @@ const GcodeUploadDetailsPage = () => {
               className="gcode-details-btn gcode-details-btn-delete d-flex align-items-center gap-2"
               disabled={isDeleting}
               onClick={askDelete}
+              data-tour="sim-delete"
             >
               {isDeleting ? <Spinner size="sm" /> : <FiTrash2 size={16} />}
               {t("simulator.delete")}
@@ -162,12 +166,12 @@ const GcodeUploadDetailsPage = () => {
             </Card>
           </Col>
 
-          <Col xs={12} lg={8}>
-            <GcodeSimulationViewer
-              simulationUrl={simUrl}
-              title={t("simulator.preview_3d")}
-            />
-          </Col>
+          <Col xs={12} lg={8} data-tour="sim-preview">
+  <GcodeSimulationViewer
+    simulationUrl={simUrl}
+    title={t("simulator.preview_3d")}
+  />
+</Col>
         </Row>
       </motion.div>
 

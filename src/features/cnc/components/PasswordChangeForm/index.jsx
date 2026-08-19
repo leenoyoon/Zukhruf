@@ -19,7 +19,7 @@ export const PasswordChangeForm = ({
   };
 
   return (
-    <Card className="modern-card border-0">
+    <Card className="modern-card border-0" data-tour="settings-security">
       <Card.Body className="p-4 p-md-5">
         <h5 className="fw-bold text-theme mb-4 d-flex align-items-center gap-2">
           <FiShield className="text-primary" size={24} />{" "}
@@ -87,6 +87,7 @@ export const PasswordChangeForm = ({
             type="submit"
             disabled={loading}
             className="btn-primary-custom w-100 py-3 mt-3 fw-bold fs-6"
+            data-tour="settings-save"
           >
             {loading ? <Spinner size="sm" className="me-2" /> : null}
             {loading ? t("settings.processing") : t("settings.save_changes")}

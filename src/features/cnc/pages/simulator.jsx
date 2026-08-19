@@ -80,6 +80,7 @@ const confirmDelete = async () => {
           <p className="text-theme-muted mb-0">{t("simulator.subtitle")}</p>
         </div>
         <Button
+        data-tour="sim-upload"
           onClick={() => {
             setUploadError("");
             setShowForm(true);

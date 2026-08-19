@@ -54,24 +54,26 @@ export const HeroSection = ({ fadeUpVariant }) => {
             {t("home.hero_desc")}
           </p>
           <Stack
-            direction="horizontal"
-            gap={3}
-            className="justify-content-center flex-wrap"
-          >
-            <Button
-              onClick={() => navigate("/new-project")}
-              className="btn-primary-custom px-5 py-3 h5 mb-0 d-flex align-items-center gap-2 rounded-pill"
-              style={{ boxShadow: "0 10px 30px rgba(255, 107, 0, 0.35)" }}
-            >
-              <FiPlay fill="currentColor" /> {t("home.btn_start")}
-            </Button>
-            <Button
-              onClick={() => navigate("/gallery")}
-              className="px-5 py-3 rounded-pill fw-bold h5 mb-0 btn-explore"
-            >
-              {t("home.btn_explore")}
-            </Button>
-          </Stack>
+  direction="horizontal"
+  gap={3}
+  className="justify-content-center flex-wrap"
+>
+  <Button
+    data-tour="home-start"
+    onClick={() => navigate("/new-project")}
+    className="btn-primary-custom px-5 py-3 h5 mb-0 d-flex align-items-center gap-2 rounded-pill"
+    style={{ boxShadow: "0 10px 30px rgba(255, 107, 0, 0.35)" }}
+  >
+    <FiPlay fill="currentColor" /> {t("home.btn_start")}
+  </Button>
+  <Button
+    data-tour="home-explore"
+    onClick={() => navigate("/gallery")}
+    className="px-5 py-3 rounded-pill fw-bold h5 mb-0 btn-explore"
+  >
+    {t("home.btn_explore")}
+  </Button>
+</Stack>
         </motion.div>
       </Container>
     </section>

@@ -22,7 +22,7 @@ import "./style.css";
 // GENERATE, so there's no need to ask for them here.
 const DEFAULT_DIMENSIONS = { x: 100, y: 100, z: 10 };
 
-export const GalleryCard = ({ img, fadeUpVariant, onDelete }) => {
+export const GalleryCard = ({ img, fadeUpVariant, onDelete,isTourTarget }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [isStarting, setIsStarting] = useState(false);
@@ -65,11 +65,14 @@ export const GalleryCard = ({ img, fadeUpVariant, onDelete }) => {
         layout
         className="h-100"
       >
-        <Card
-          className="modern-card gallery-card h-100 border-0"
-          style={{ cursor: "pointer" }}
-          onClick={() => navigate(`/gallery/${img.id}`)}
-        >
+<Card
+  className={`modern-card gallery-card h-100 border-0${
+    isTourTarget ? " tour-force-show" : ""
+  }`}
+  data-tour={isTourTarget ? "gallery-card" : undefined}
+  style={{ cursor: "pointer" }}
+  onClick={() => navigate(`/gallery/${img.id}`)}
+>
           <div className="gallery-card-img-container">
             <Card.Img
               src={img.image_file || img.image_url}
@@ -92,6 +95,7 @@ export const GalleryCard = ({ img, fadeUpVariant, onDelete }) => {
               >
                 <Button
                   variant="light"
+                  data-tour={isTourTarget ? "gallery-card-view" : undefined}
                   className="rounded-circle p-2 d-flex align-items-center justify-content-center btn-action-circle"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -109,6 +113,7 @@ export const GalleryCard = ({ img, fadeUpVariant, onDelete }) => {
                 <Button
                   variant="primary"
                   disabled={isStarting}
+                  data-tour={isTourTarget ? "gallery-card-start" : undefined}
                   className="rounded-circle p-2 d-flex align-items-center justify-content-center btn-play-circle"
                   onClick={handleQuickGenerate}
                 >
@@ -127,6 +132,7 @@ export const GalleryCard = ({ img, fadeUpVariant, onDelete }) => {
                 <Button
                   variant="danger"
                   className="rounded-circle p-2 d-flex align-items-center justify-content-center btn-delete-circle"
+                  data-tour={isTourTarget ? "gallery-card-delete": undefined}
                   onClick={(e) => {
                     e.stopPropagation();
                     onDelete(img.id);

@@ -28,6 +28,7 @@ export const NewProjectPreview = ({
     >
       <Card
         className="modern-card border-0 h-100 d-flex flex-column"
+        data-tour="np-preview"
         style={{ minHeight: "600px" }}
       >
         <Card.Header className="bg-transparent border-bottom py-3 d-flex justify-content-between align-items-center px-4">
@@ -135,6 +136,7 @@ export const NewProjectPreview = ({
                                 href={url}
                                 download
                                 className="btn btn-sm btn-outline-primary fw-bold"
+                                data-tour="np-download-gcode"
                               >
                                 {t("new_project.download_gcode", "Download G-Code")}
                               </a>

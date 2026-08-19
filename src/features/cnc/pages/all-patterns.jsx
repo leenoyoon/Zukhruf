@@ -50,6 +50,7 @@ const AllPatternsPage = () => {
           className="text-center"
         >
           <Badge
+          data-tour="patterns-header"
             bg="none"
             className="mb-3 px-3 py-2 rounded-pill fw-bold"
             style={{
@@ -101,7 +102,7 @@ const AllPatternsPage = () => {
           >
             <Row className="g-4">
               <AnimatePresence>
-                {patterns.map((pattern) => (
+                {patterns.map((pattern, index) => (
                   <Col xs={12} sm={6} lg={4} xl={3} key={pattern.id}>
                     <motion.div
                       variants={itemVariants}
@@ -109,6 +110,7 @@ const AllPatternsPage = () => {
                       transition={{ duration: 0.3 }}
                     >
                       <Card
+                      data-tour={index === 0 ? "patterns-card" : undefined}
                         className="modern-card border-0 h-100 overflow-hidden shadow-hover"
                         style={{
                           backgroundColor: "var(--bg-surface)",
@@ -147,6 +149,8 @@ src={pattern.image_file || pattern.image_url}
                           </div>
 
                           <Button
+                                                      data-tour={index === 0 ? "patterns-view" : undefined}
+
                             className="btn-primary-custom w-100 py-2 mt-auto d-flex justify-content-center align-items-center gap-2"
                             onClick={() => navigate(`/gallery/${pattern.id}`)}
                           >
@@ -164,6 +168,7 @@ src={pattern.image_file || pattern.image_url}
           {hasNext && (
             <div className="text-center mt-5 pt-4">
               <Button
+              data-tour="patterns-load-more"
                 onClick={loadMore}
                 disabled={isLoadingMore}
                 className="px-5 py-3 fw-black rounded-pill border-0 shadow-lg transition-all"

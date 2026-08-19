@@ -63,12 +63,13 @@ const confirmDelete = async () => {
           </h1>
           <p className="text-theme-muted mb-0">{t("projects.subtitle")}</p>
         </div>
-        <Button
-          onClick={() => navigate("/new-project")}
-          className="btn-primary-custom d-flex align-items-center justify-content-center gap-2 px-4 py-2"
-        >
-          <FiPlus size={20} /> {t("projects.btn_new")}
-        </Button>
+      <Button
+  data-tour="projects-new"
+  onClick={() => navigate("/new-project")}
+  className="btn-primary-custom px-4 py-2"
+>
+  <FiPlus size={20} /> {t("projects.btn_new")}
+</Button>
       </div>
 
       {loading ? (
@@ -100,14 +101,15 @@ const confirmDelete = async () => {
         <>
           <Row className="g-4">
             <AnimatePresence>
-              {projects.map((proj) => (
-                <ProjectCard
-                  key={proj.id}
-                  project={proj}
-                  fadeUpVariant={fadeUpVariant}
-                  onDelete={(id) => askDelete(id)}
-                />
-              ))}
+             {projects.map((proj, index) => (
+  <ProjectCard
+    key={proj.id}
+    project={proj}
+    fadeUpVariant={fadeUpVariant}
+    onDelete={(id) => askDelete(id, proj.title)}
+    tourTarget={index === 0}
+  />
+))}
             </AnimatePresence>
           </Row>
 

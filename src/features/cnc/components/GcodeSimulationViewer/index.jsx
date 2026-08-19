@@ -24,7 +24,7 @@ export const GcodeSimulationViewer = ({ simulationUrl, title }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
     >
-      <Card className="modern-card border-0 overflow-hidden">
+      <Card className="modern-card border-0 overflow-hidden" data-tour="sim-viewer">
         <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 p-3 border-bottom"
           style={{ borderColor: "var(--glass-border)" }}
         >

@@ -44,3 +44,9 @@
   color: #ff4d4d;
   border: none;
 }
+/* Keep action buttons visible for the tour target card */
+/* Show overlay only while the page tour is running */
+body.zukhruf-tour-active .gallery-card.tour-force-show .action-overlay {
+  opacity: 1 !important;
+  visibility: visible !important;
+}

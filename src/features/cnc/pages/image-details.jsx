@@ -66,6 +66,8 @@ const confirmDelete = async () => {
         <h3 className="text-danger fw-bold">{error || "Image not found"}</h3>
         <Button
           onClick={() => navigate("/gallery")}
+          data-tour="gd-back"
+          variant="link"
           className="mt-3 btn-primary-custom px-4"
         >
           {i18n.language === "ar" ? "العودة للمعرض" : "Back to Gallery"}

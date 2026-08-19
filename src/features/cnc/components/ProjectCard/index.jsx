@@ -14,6 +14,7 @@ import {
   FiClock,
   FiCalendar,
 } from "react-icons/fi";
+import "./style.css";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -105,42 +106,26 @@ export const ProjectCard = ({ project, fadeUpVariant, onDelete }) => {
                 overlay={<Tooltip>{t("projects.view_details")}</Tooltip>}
               >
                 <Button
-                  variant="light"
-                  onClick={() => navigate(`/project/${project.id}`)}
-                  className="d-flex align-items-center justify-content-center p-2 rounded-3"
-                  style={{
-                    backgroundColor: "var(--bg-deep)",
-                    color: "var(--text-main)",
-                    border: "1px solid var(--glass-border)",
-                  }}
-                >
+  variant="light"
+  data-tour="projects-card-view"
+  onClick={() => navigate(`/project/${project.id}`)}
+  className="project-card-btn-view d-flex align-items-center justify-content-center p-2 rounded-3"
+>
                   <FiEye size={20} />
                 </Button>
               </OverlayTrigger>
 
 <Button
+  data-tour="projects-card-download"
   disabled={project.status !== "completed" || !gcodeUrl}
   href={gcodeUrl && project.status === "completed" ? gcodeUrl : undefined}
   target="_blank"
   download={project.status === "completed" && gcodeUrl ? true : undefined}
-  className="flex-grow-1 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2"
-  style={{
-    background:
-      project.status === "completed" && gcodeUrl
-        ? "linear-gradient(135deg, #F47521 0%, #FF914D 100%)"
-        : "var(--bg-deep)",
-    color:
-      project.status === "completed" && gcodeUrl
-        ? "white"
-        : "var(--text-muted-custom)",
-    boxShadow:
-      project.status === "completed" && gcodeUrl
-        ? "0 5px 15px rgba(244, 117, 33, 0.3)"
-        : "none",
-    border: "none",
-    cursor:
-      project.status === "completed" && gcodeUrl ? "pointer" : "default",
-  }}
+  className={`flex-grow-1 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 ${
+    project.status === "completed" && gcodeUrl
+      ? "project-card-btn-download"
+      : "project-card-btn-download-disabled"
+  }`}
 >
   <FiDownload size={18} />
   {project.status === "completed" && gcodeUrl
@@ -149,23 +134,18 @@ export const ProjectCard = ({ project, fadeUpVariant, onDelete }) => {
       ? t("projects.status_failed") || "Failed"
       : t("projects.pending")}
 </Button>
-
               <OverlayTrigger
                 placement="top"
                 overlay={<Tooltip>{t("projects.delete_project")}</Tooltip>}
               >
                 <Button
-                  variant="danger"
-                  onClick={() => onDelete(project.id)}
-                  className="d-flex align-items-center justify-content-center p-2 rounded-3"
-                  style={{
-                    backgroundColor: "rgba(255, 0, 0, 0.1)",
-                    color: "#ff4d4d",
-                    border: "none",
-                  }}
-                >
-                  <FiTrash2 size={20} />
-                </Button>
+  variant="danger"
+  data-tour="projects-card-delete"
+  onClick={() => onDelete(project.id)}
+  className="project-card-btn-delete d-flex align-items-center justify-content-center p-2 rounded-3"
+>
+  <FiTrash2 size={20} />
+</Button>
               </OverlayTrigger>
             </div>
           </Card.Body>

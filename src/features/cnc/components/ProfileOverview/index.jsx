@@ -25,7 +25,7 @@ export const ProfileOverview = ({ profile }) => {
   };
 
   return (
-    <Card className="modern-card border-0">
+    <Card className="modern-card border-0" data-tour="settings-profile">
       <Card.Body className="p-4 p-md-5">
         <div className="d-flex align-items-center gap-4 mb-5">
           <Image
@@ -34,7 +34,7 @@ export const ProfileOverview = ({ profile }) => {
             className="profile-avatar"
           />
           <div>
-            <h4 className="fw-bold text-theme mb-1">{profile.username}</h4>
+            <h4 className="fw-bold text-theme mb-1" >{profile.username} </h4>
             <Badge
               bg="secondary"
               className="bg-opacity-25 text-theme-muted fw-bold rounded-pill px-3 py-2"
@@ -48,10 +48,11 @@ export const ProfileOverview = ({ profile }) => {
           <Row className="g-3">
             <Col md={6}>
               <Form.Group>
-                <Form.Label className="text-theme fw-bold small d-flex align-items-center gap-2">
+                <Form.Label className="text-theme fw-bold small d-flex align-items-center gap-2" >
                   <FiUser className="text-primary" /> {t("settings.username")}
                 </Form.Label>
                 <Form.Control
+                data-tour="settings-username"
                   className="profile-input p-3 rounded-3 fw-bold text-theme-muted"
                   style={inputStyle}
                   value={profile.username}
@@ -65,6 +66,7 @@ export const ProfileOverview = ({ profile }) => {
                   <FiMail className="text-primary" /> {t("settings.email")}
                 </Form.Label>
                 <Form.Control
+                data-tour="settings-email"
                   className="profile-input p-3 rounded-3 fw-bold text-theme-muted"
                   style={inputStyle}
                   value={profile.email || t("settings.no_email")}
