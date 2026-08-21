@@ -260,33 +260,51 @@ export const NewProjectPreview = ({
                             >
                               {t("new_project.est_points")}
                             </small>
+                            <small className="text-theme-muted mt-1" style={{ fontSize: "0.65rem" }}>
+  {t("new_project.est_points_hint")}
+</small>
                           </div>
                         </Col>
 
-                        <Col xs={6}>
-                          <div
-                            className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
-                            style={{
-                              background: "rgba(108, 117, 125, 0.1)",
-                              border: "1px solid rgba(108, 117, 125, 0.2)",
-                            }}
-                          >
-                            <div
-                              className="h3 fw-black text-theme mb-1"
-                              style={{ direction: "ltr" }}
-                            >
-                              {report.unreachable_area_mm2 != null
-                                ? Number(report.unreachable_area_mm2).toFixed(1)
-                                : "—"}
-                            </div>
-                            <small
-                              className="text-theme-muted fw-bold text-uppercase"
-                              style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
-                            >
-                              {t("new_project.unreachable_area")} mm²
-                            </small>
-                          </div>
-                        </Col>
+                       <Col xs={6}>
+  <div
+    className="p-3 rounded-4 text-center h-100 d-flex flex-column justify-content-center"
+    style={{
+      background: "rgba(108, 117, 125, 0.1)",
+      border: "1px solid rgba(108, 117, 125, 0.2)",
+    }}
+  >
+    <div
+      className="h5 fw-black text-theme mb-1"
+      style={{ direction: "ltr" }}
+    >
+      {report.unreachable_area_mm2 != null
+        ? `${Number(report.unreachable_area_mm2).toFixed(1)} / ${
+            report.foreground_area_mm2 != null
+              ? Number(report.foreground_area_mm2).toFixed(0)
+              : "—"
+          }`
+        : "—"}
+    </div>
+    <small
+      className="text-theme-muted fw-bold text-uppercase"
+      style={{ fontSize: "0.7rem", letterSpacing: "1px" }}
+    >
+      {t("new_project.unreachable_area")} mm²
+    </small>
+    {report.unreachable_area_mm2 != null &&
+      report.foreground_area_mm2 > 0 && (
+        <small className="text-theme-muted mt-1" style={{ direction: "ltr" }}>
+          {(
+            (Number(report.unreachable_area_mm2) /
+              Number(report.foreground_area_mm2)) *
+            100
+          ).toFixed(2)}
+          %
+        </small>
+      )}
+  </div>
+</Col>
                       </Row>
                     </div>
 

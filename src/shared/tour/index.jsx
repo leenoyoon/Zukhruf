@@ -110,9 +110,11 @@ export function AppTour() {
     const path = location.pathname;
 
     const timer = setTimeout(() => {
-      if (path.includes("/new") || path.includes("projects/create")) {
-        startTour(buildNewProjectSteps(t), TOUR_KEYS.np, false);
-      } else if (path.match(/\/project\/\d+/) || path.includes("/project/")) {
+     if (path.includes("/new") || path.includes("projects/create")) {
+  if (!location.state?.existingImage) {
+    startTour(buildNewProjectSteps(t), TOUR_KEYS.np, false);
+  }
+} else if (path.match(/\/project\/\d+/) || path.includes("/project/")) {
         startTour(buildProjectDetailsSteps(t), TOUR_KEYS.pd, false);
       } else if (path === "/projects" || path.startsWith("/projects")) {
         startTour(buildProjectsSteps(t), TOUR_KEYS.projects, false);
@@ -141,8 +143,7 @@ export function AppTour() {
       clearTimeout(timer);
       destroyTour();
     };
-  }, [location.pathname, t, isLoggedIn, startTour, destroyTour]);
-
+}, [location.pathname, location.state, t, isLoggedIn, startTour, destroyTour]);
   return null;
 }
 
