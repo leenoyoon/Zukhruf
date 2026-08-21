@@ -13,42 +13,49 @@ import {
   buildGallerySteps,
   buildGalleryDetailSteps,
   buildSimulatorSteps,
-buildSimulatorDetailSteps,
-buildSettingsSteps,
-buildPatternsSteps,
+  buildSimulatorDetailSteps,
+  buildSettingsSteps,
+  buildPatternsSteps,
 } from "./steps";
 import { useAuth } from "../../features/auth/context/AuthContext";
 
-/**
- * Page-scoped first-visit tours (driver.js).
- * - Home/navbar: first visit to the site
- * - New Project: first open of create page
- * - Project details: first open of a project page
- * - Restart anytime via window.startZukhrufTour() (help button)
- */
+function safeGet(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    return;
+  }
+}
+
 export function AppTour() {
   const { t, i18n } = useTranslation();
   const { isLoggedIn } = useAuth();
   const location = useLocation();
   const driverRef = useRef(null);
 
-const destroyTour = useCallback(() => {
-  document.body.classList.remove("zukhruf-tour-active");
-  if (driverRef.current) {
-    try {
-      driverRef.current.destroy();
-    } catch (_) {}
-    driverRef.current = null;
-  }
-}, []);
+  const destroyTour = useCallback(() => {
+    document.body.classList.remove("zukhruf-tour-active");
+    if (driverRef.current) {
+      try {
+        driverRef.current.destroy();
+      } catch {
+        return;
+      }
+      driverRef.current = null;
+    }
+  }, []);
 
   const startTour = useCallback(
     (steps, storageKey, force = false) => {
-      if (!force) {
-        try {
-          if (localStorage.getItem(storageKey) === "1") return;
-        } catch (_) {}
-      }
+      if (!force && safeGet(storageKey) === "1") return;
 
       destroyTour();
 
@@ -78,64 +85,63 @@ const destroyTour = useCallback(() => {
         doneBtnText: t("tour.done"),
         closeBtnText: t("tour.close"),
         steps: validSteps,
-    onDestroyStarted: () => {
-  try {
-    localStorage.setItem(storageKey, "1");
-  } catch (_) {}
-  document.body.classList.remove("zukhruf-tour-active");
-  destroyTour();
-},
-onDestroyed: () => {
-  try {
-    localStorage.setItem(storageKey, "1");
-  } catch (_) {}
-  document.body.classList.remove("zukhruf-tour-active");
-},
+        onPopoverRender: (popover) => {
+          popover.wrapper.setAttribute("dir", isRtl ? "rtl" : "ltr");
+        },
+        onDestroyStarted: () => {
+          safeSet(storageKey, "1");
+          document.body.classList.remove("zukhruf-tour-active");
+          destroyTour();
+        },
+        onDestroyed: () => {
+          safeSet(storageKey, "1");
+          document.body.classList.remove("zukhruf-tour-active");
+        },
       });
 
       document.body.classList.add("zukhruf-tour-active");
-driverRef.current = d;
-d.drive();
+      driverRef.current = d;
+      d.drive();
     },
     [t, i18n.language, destroyTour],
   );
 
-  // Help button: restart tour for current page
-// Auto-start once per page (first visit only)
-useEffect(() => {
-  const path = location.pathname;
+  useEffect(() => {
+    const path = location.pathname;
 
-  const timer = setTimeout(() => {
-if (path.includes("/new") || path.includes("projects/create")) {
-  startTour(buildNewProjectSteps(t), TOUR_KEYS.np, false);
-} else if (path.match(/\/project\/\d+/) || path.includes("/project/")) {
-  startTour(buildProjectDetailsSteps(t), TOUR_KEYS.pd, false);
-} else if (path === "/projects" || path.startsWith("/projects")) {
-  startTour(buildProjectsSteps(t), TOUR_KEYS.projects, false);
-} else if (path.match(/^\/simulator\/\d+/)) {
-  startTour(buildSimulatorDetailSteps(t), TOUR_KEYS.simulatorDetail, false);
-} else if (path.startsWith("/simulator")) {
-  startTour(buildSimulatorSteps(t), TOUR_KEYS.simulator, false);
-} else if (path.match(/^\/gallery\/\d+/)) {
-  startTour(buildGalleryDetailSteps(t), TOUR_KEYS.galleryDetail, false);
-} else if (path.startsWith("/gallery")) {
-  startTour(buildGallerySteps(t), TOUR_KEYS.gallery, false);
-}else if (path.startsWith("/patterns")) {
-  startTour(buildPatternsSteps(t), TOUR_KEYS.patterns, false);
-} else if (path.startsWith("/settings")) {
-  startTour(buildSettingsSteps(t), TOUR_KEYS.settings, false);
-}
-else {
-  startTour(buildHomeSteps(t, { isLoggedIn }), TOUR_KEYS.home, false);
-}
+    const timer = setTimeout(() => {
+      if (path.includes("/new") || path.includes("projects/create")) {
+        startTour(buildNewProjectSteps(t), TOUR_KEYS.np, false);
+      } else if (path.match(/\/project\/\d+/) || path.includes("/project/")) {
+        startTour(buildProjectDetailsSteps(t), TOUR_KEYS.pd, false);
+      } else if (path === "/projects" || path.startsWith("/projects")) {
+        startTour(buildProjectsSteps(t), TOUR_KEYS.projects, false);
+      } else if (path.match(/^\/simulator\/\d+/)) {
+        startTour(
+          buildSimulatorDetailSteps(t),
+          TOUR_KEYS.simulatorDetail,
+          false,
+        );
+      } else if (path.startsWith("/simulator")) {
+        startTour(buildSimulatorSteps(t), TOUR_KEYS.simulator, false);
+      } else if (path.match(/^\/gallery\/\d+/)) {
+        startTour(buildGalleryDetailSteps(t), TOUR_KEYS.galleryDetail, false);
+      } else if (path.startsWith("/gallery")) {
+        startTour(buildGallerySteps(t), TOUR_KEYS.gallery, false);
+      } else if (path.startsWith("/patterns")) {
+        startTour(buildPatternsSteps(t), TOUR_KEYS.patterns, false);
+      } else if (path.startsWith("/settings")) {
+        startTour(buildSettingsSteps(t), TOUR_KEYS.settings, false);
+      } else {
+        startTour(buildHomeSteps(t, { isLoggedIn }), TOUR_KEYS.home, false);
+      }
+    }, 2000);
 
-  }, 2000);
-
-  return () => {
-    clearTimeout(timer);
-    destroyTour();
-  };
-}, [location.pathname, t, isLoggedIn, startTour, destroyTour]);
+    return () => {
+      clearTimeout(timer);
+      destroyTour();
+    };
+  }, [location.pathname, t, isLoggedIn, startTour, destroyTour]);
 
   return null;
 }

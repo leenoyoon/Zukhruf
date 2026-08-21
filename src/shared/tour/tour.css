@@ -1,5 +1,3 @@
-/* Zukhruf Tour — lighter overlay, theme-friendly */
-
 .driver-popover.zukhruf-tour {
   background-color: var(--bg-surface, #1e2228) !important;
   color: var(--text-main, #f0f0f0) !important;
@@ -9,6 +7,7 @@
   max-width: 340px !important;
   padding: 18px 20px !important;
   font-family: "Cairo", sans-serif !important;
+  position: relative !important;
 }
 
 .driver-popover.zukhruf-tour .driver-popover-title {
@@ -22,17 +21,6 @@
   font-size: 0.92rem !important;
   color: var(--text-muted-custom, #a0a5ae) !important;
   line-height: 1.55 !important;
-}
-
-.driver-popover.zukhruf-tour .driver-popover-progress-text {
-  color: var(--text-muted-custom, #a0a5ae) !important;
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-}
-
-.driver-popover.zukhruf-tour .driver-popover-navigation-btns {
-  gap: 8px !important;
-  margin-top: 14px !important;
 }
 
 .driver-popover.zukhruf-tour button {
@@ -59,6 +47,10 @@
 .driver-popover.zukhruf-tour .driver-popover-close-btn {
   color: var(--text-muted-custom, #a0a5ae) !important;
   background: transparent !important;
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  left: auto !important;
 }
 
 .driver-popover.zukhruf-tour .driver-popover-arrow-side-left,
@@ -68,7 +60,6 @@
   border-color: var(--bg-surface, #1e2228) !important;
 }
 
-/* Highlight */
 .driver-active-element {
   outline: 3px solid #ff6b00 !important;
   outline-offset: 4px !important;
@@ -76,18 +67,64 @@
   box-shadow: 0 0 0 6px rgba(255, 107, 0, 0.25) !important;
 }
 
-/* Lighter overlay */
 .driver-overlay {
   background: rgba(0, 0, 0, 0.45) !important;
 }
 
-/* RTL */
-[dir="rtl"] .driver-popover.zukhruf-tour {
+.driver-popover.zukhruf-tour .driver-popover-footer {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  width: 100% !important;
+  gap: 8px !important;
+  margin-top: 14px !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-navigation-btns {
+  order: 1 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.driver-popover.zukhruf-tour .driver-popover-progress-text {
+  order: 2 !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  color: var(--text-muted-custom, #a0a5ae) !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+}
+
+[dir="rtl"] .driver-popover.zukhruf-tour,
+html[dir="rtl"] .driver-popover.zukhruf-tour {
   text-align: right;
 }
 
-[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-navigation-btns {
-  flex-direction: row-reverse;
+[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-close-btn,
+html[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-close-btn {
+  right: auto !important;
+  left: 12px !important;
+}
+
+[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-footer,
+html[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-footer {
+  flex-direction: row-reverse !important;
+}
+
+[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-progress-text,
+html[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-progress-text {
+  order: 0 !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-navigation-btns,
+html[dir="rtl"] .driver-popover.zukhruf-tour .driver-popover-navigation-btns {
+  order: 1 !important;
+  margin: 0 !important;
+  flex-direction: row-reverse !important;
 }
 
 .tour-help-btn {

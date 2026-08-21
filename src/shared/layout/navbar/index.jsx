@@ -16,7 +16,6 @@ import "./style.css";
 import { useTranslation } from "react-i18next";
 import { FiGlobe } from "react-icons/fi";
 import { useAuth } from "../../../features/auth/context/AuthContext";
-import { FiHelpCircle } from "react-icons/fi";
 const CustomNavbar = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -106,17 +105,6 @@ const CustomNavbar = () => {
             >
               {mode === "dark" ? <FiSun size={20} /> : <FiMoon size={20} />}
             </div>
-            <div
-  onClick={() => {
-    if (typeof window.startZukhrufTour === "function") {
-      window.startZukhrufTour();
-    }
-  }}
-  className="hover-icon hover-orange cursor-pointer tour-help-btn"
-  title={t("tour.restart", "Show guide")}
->
-  <FiHelpCircle size={20} />
-</div>
             {isLoggedIn ? (
               <>
                 <div
