@@ -106,7 +106,7 @@ export function buildHomeSteps(t, { isLoggedIn }) {
       popover: {
         title: t("tour.home_start_title"),
         description: t("tour.home_start_desc"),
-        side: "bottom",
+        side: "top",
         align: "center",
       },
     },
@@ -115,7 +115,7 @@ export function buildHomeSteps(t, { isLoggedIn }) {
       popover: {
         title: t("tour.home_explore_title"),
         description: t("tour.home_explore_desc"),
-        side: "bottom",
+        side: "top",
         align: "center",
       },
     },
@@ -124,8 +124,8 @@ export function buildHomeSteps(t, { isLoggedIn }) {
       popover: {
         title: t("tour.home_view_all_title"),
         description: t("tour.home_view_all_desc"),
-        side: "left",
-        align: "center",
+        side: "bottom",
+        align: "end",
       },
     },
     {
@@ -133,7 +133,7 @@ export function buildHomeSteps(t, { isLoggedIn }) {
       popover: {
         title: t("tour.home_pattern_card_title"),
         description: t("tour.home_pattern_card_desc"),
-        side: "top",
+        side: "right",
         align: "center",
       },
     },
@@ -211,7 +211,7 @@ export function buildProjectDetailsSteps(t) {
       popover: {
         title: t("tour.pd_edit_title"),
         description: t("tour.pd_edit_desc"),
-        side: "right",
+        side: "left",
         align: "start",
       },
     },
